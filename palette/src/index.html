@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>codejam-canvas</title>
+</head>
+<body>
+    <header class="header">
+        <button class="header__burger-btn"><i class="icon icon--burger"></i></button>
+        <div class="header__title">CodeJam - Canvas</div>
+        <button class="header__right-menu-btn"><i class="icon icon--menu"></i></button>
+    </header>
+    <main class="main">
+        <!--Left sidebar-->
+        <div class="sidebar sidebar--left">
+            <div class="toolbar tools">
+                <ul class="toolbar__list">
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn">
+                            <i class="icon icon--paint-bucket"></i> Paint bucket
+                        </button>
+                    </li>
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn">
+                            <i class="icon icon--eyedropper"></i> Choose color
+                        </button>
+                    </li>
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn">
+                            <i class="icon icon--pencil"></i> Pencil
+                        </button>
+                    </li>
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn" disabled>
+                            <i class="icon icon--transform"></i> Transform
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="toolbar colors">
+                <ul class="toolbar__list">
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn">
+                            <i class="color-icon"></i> Current color
+                        </button>
+                    </li>
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn">
+                            <i class="color-icon"></i> Prev color
+                        </button>
+                    </li>
+                    <li class="toolbar__item toolbar__item--border">
+                        <button class="toolbar__btn">
+                            <i class="color-icon" style="background: #F74141;"></i> red
+                        </button>
+                    </li>
+                    <li class="toolbar__item">
+                        <button class="toolbar__btn">
+                            <i class="color-icon" style="background: #41B6F7;"></i> blue
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--/Left sidebar-->
+
+        <!--Content-->
+        <div class="content">
+            <canvas id="canvas" class="canvas"></canvas>
+        </div>
+        <!--/Content-->
+    </main>
+</body>
+</html>

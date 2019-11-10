@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin-bottom: 80px;
+  padding: 0 20px;
+  background: #fff;
+  color: #000;
+  box-shadow: $shadow-main;
+
+  &__burger-btn {
+    margin-right: 32px;
+    background: none;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+  }
+
+  &__right-menu-btn {
+    margin-left: auto;
+    background: none;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+  }
+}
