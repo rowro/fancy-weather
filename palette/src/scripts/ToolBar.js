@@ -11,8 +11,11 @@ export default class ToolBar {
   }
 
   init() {
+    // Set initial tool
     if (localStorage.getItem('currentTool')) {
       this.changeTool( localStorage.getItem('currentTool') );
+    } else {
+      this.changeTool('pencil');
     }
 
     Object.keys(this.tools).forEach((key) => {
