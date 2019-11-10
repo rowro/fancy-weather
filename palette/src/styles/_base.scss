@@ -25,3 +25,10 @@ a {
 .sidebar {
   padding: 0 30px;
 }
+
+.hide {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}

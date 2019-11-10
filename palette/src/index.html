@@ -19,17 +19,17 @@
             <div class="toolbar tools">
                 <ul class="toolbar__list">
                     <li class="toolbar__item">
-                        <button class="toolbar__btn">
+                        <button id="paint-bucket-btn" class="toolbar__btn">
                             <i class="icon icon--paint-bucket"></i> Paint bucket
                         </button>
                     </li>
                     <li class="toolbar__item">
-                        <button class="toolbar__btn">
+                        <button id="eyedropper-btn" class="toolbar__btn">
                             <i class="icon icon--eyedropper"></i> Choose color
                         </button>
                     </li>
                     <li class="toolbar__item">
-                        <button class="toolbar__btn">
+                        <button id="pencil-btn" class="toolbar__btn">
                             <i class="icon icon--pencil"></i> Pencil
                         </button>
                     </li>
@@ -44,22 +44,23 @@
             <div class="toolbar colors">
                 <ul class="toolbar__list">
                     <li class="toolbar__item">
-                        <button class="toolbar__btn">
+                        <label id="current-color-btn" class="toolbar__btn">
+                            <input type="color" class="hide" tabindex=-1>
                             <i class="color-icon"></i> Current color
-                        </button>
+                        </label>
                     </li>
                     <li class="toolbar__item">
-                        <button class="toolbar__btn">
+                        <button id="prev-color-btn" class="toolbar__btn">
                             <i class="color-icon"></i> Prev color
                         </button>
                     </li>
                     <li class="toolbar__item toolbar__item--border">
-                        <button class="toolbar__btn">
+                        <button id="red-color-btn" class="toolbar__btn">
                             <i class="color-icon" style="background: #F74141;"></i> red
                         </button>
                     </li>
                     <li class="toolbar__item">
-                        <button class="toolbar__btn">
+                        <button id="blue-color-btn" class="toolbar__btn">
                             <i class="color-icon" style="background: #41B6F7;"></i> blue
                         </button>
                     </li>
