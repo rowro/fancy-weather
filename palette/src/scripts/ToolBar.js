@@ -6,6 +6,7 @@ export default class ToolBar {
     this.currentTool = '';
     this.matrixSize = null;
     this.canvasSize = null;
+    this.mouseDown = false;
 
     this.init();
   }
@@ -69,7 +70,9 @@ export default class ToolBar {
         break;
 
       case 'pencil':
-        this.pencil(pos);
+        if (this.mouseDown) {
+          this.pencil(pos);
+        }
         break;
 
       default:
