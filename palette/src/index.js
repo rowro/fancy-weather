@@ -1,11 +1,9 @@
 import './styles/main.scss';
+import Canvas from "./scripts/Canvas";
 
 const canvasSize = 512;
 
 document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.querySelector('#canvas');
-
-  // Set canvas size
-  canvas.width = canvasSize;
-  canvas.height = canvasSize;
+  const canvas = new Canvas('#canvas', canvasSize);
+  canvas.init();
 });
