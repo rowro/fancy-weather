@@ -43,8 +43,18 @@ export default class Canvas {
       this.colorbar.changeColor('green');
     }
 
+    // Restore canvas from localstorage
+    if (localStorage.getItem('canvasImage')) {
+      const img = new Image;
+      img.src = localStorage.getItem('canvasImage');
+      img.onload = () => {
+        this.ctx.drawImage(img, 0, 0);
+      };
+    }
+
     this.el.addEventListener('click', (e) => {
       this.toolbar.applyCurrentTool(e);
+      this.saveCanvas();
     });
 
     // Events for pencil tool
@@ -59,10 +69,15 @@ export default class Canvas {
     this.el.addEventListener('mouseup', () => {
       this.el.onmousemove = null;
       this.toolbar.mouseDown = false;
+      this.saveCanvas();
     });
 
     document.addEventListener('changeColor', (e) => {
       this.colorbar.changeColor(e.detail);
     })
+  }
+
+  saveCanvas() {
+    localStorage.setItem('canvasImage', this.el.toDataURL());
   }
 }
