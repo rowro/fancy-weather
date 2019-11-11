@@ -53,7 +53,7 @@ export default class Canvas {
     }
 
     this.el.addEventListener('click', (e) => {
-      this.toolbar.applyCurrentTool(e);
+      this.toolbar.applyCurrentTool(e, true);
       this.saveCanvas();
     });
 

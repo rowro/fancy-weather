@@ -54,7 +54,7 @@ export default class ToolBar {
     this.tools[tool].classList.add('toolbar__btn--active');
   }
 
-  applyCurrentTool(e) {
+  applyCurrentTool(e, clicked) {
     const pos = {
       x: e.clientX - e.target.offsetLeft,
       y: e.clientY - e.target.offsetTop,
@@ -70,7 +70,7 @@ export default class ToolBar {
         break;
 
       case 'pencil':
-        if (this.mouseDown) {
+        if (this.mouseDown || clicked) {
           this.pencil(pos);
         }
         break;
