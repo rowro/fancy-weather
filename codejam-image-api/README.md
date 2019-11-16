@@ -1,6 +1,4 @@
-# Codejam Palette
-
-https://rowro-codejam-palette.netlify.com/
+# Codejam image-api
 
 Dev:  
 `npm run start`
