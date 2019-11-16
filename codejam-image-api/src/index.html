@@ -71,7 +71,21 @@
 
         <!--Content-->
         <div class="content">
-            <div id="canvas" class="canvas"></div>
+            <div class="canvas">
+                <div class="canvas__header">
+                    <form action="#" class="canvas__form">
+                        <button class="btn">Load</button>
+                        <label class="canvas__search"><input type="text" name="city" required></label>
+                    </form>
+                    <button class="btn">B&W</button>
+                </div>
+                <div id="canvas" class="canvas__el"></div>
+                <div class="canvas__footer">
+                    <button class="btn">128x128</button>
+                    <button class="btn">256x256</button>
+                    <button class="btn">512x512</button>
+                </div>
+            </div>
         </div>
         <!--/Content-->
     </main>
