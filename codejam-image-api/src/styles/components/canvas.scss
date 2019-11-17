@@ -48,6 +48,9 @@
   &__el {
     width: 512px;
     height: 512px;
+    background-image:
+      linear-gradient(to right, rgba(#00cec9, 0.5) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(#00cec9, 0.5) 1px, transparent 1px);
     box-shadow: $shadow-main;
   }
 

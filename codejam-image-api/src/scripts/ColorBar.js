@@ -1,8 +1,8 @@
 export default class ColorBar {
-  constructor(prevColorEl, currentColorEl, defaultColors) {
-    this.ctx = null;
-    this.prevColorEl = prevColorEl;
-    this.currentColorEl = currentColorEl;
+  constructor({ currentColorBtn, prevColorBtn, defaultColors }, canvas) {
+    this.ctx = canvas.getContext('2d');
+    this.currentColorEl = currentColorBtn;
+    this.prevColorEl = prevColorBtn;
     this.defaultColors = defaultColors;
 
     this.prevColor = '';
