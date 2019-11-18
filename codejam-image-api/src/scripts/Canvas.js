@@ -86,6 +86,7 @@ export default class Canvas {
       const img = new Image();
       img.src = initial.image;
       img.onload = () => {
+        this.isImageLoaded = true;
         this.ctx.drawImage(img, 0, 0);
       };
     }
