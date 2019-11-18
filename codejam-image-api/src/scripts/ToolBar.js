@@ -107,7 +107,6 @@ export default class ToolBar {
   pencil(pos) {
     const pxSize = parseInt(this.canvas.style.width, 10) / this.canvas.width;
     const currentPos = this.getPixelPosition(pos);
-    console.log(pxSize);
     this.ctx.fillRect(currentPos.x, currentPos.y, pxSize, pxSize);
   }
 }

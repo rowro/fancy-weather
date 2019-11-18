@@ -203,7 +203,6 @@ export default class Canvas {
   }
 
   changeMatrixSize(size) {
-
     this.saveCanvas();
     localStorage.setItem('matrixSize', size);
 
