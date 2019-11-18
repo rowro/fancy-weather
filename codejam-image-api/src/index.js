@@ -1,9 +1,13 @@
 import 'babel-polyfill';
 
 import './styles/main.scss';
+import netlifyIdentity from 'netlify-identity-widget';
+
 import Canvas from './scripts/Canvas';
 
 document.addEventListener('DOMContentLoaded', () => {
+  netlifyIdentity.init();
+
   const config = {
     container: document.querySelector('#canvas'),
     canvasSize: 512,
