@@ -14,6 +14,11 @@ export default class Canvas {
     this.toolsConfig = tools;
     this.colorsConfig = colors;
     this.isImageLoaded = false;
+
+    this.el = null;
+    this.ctx = null;
+    this.toolbar = null;
+    this.colorbar = null;
   }
 
   get pxSize() {
@@ -25,7 +30,10 @@ export default class Canvas {
     this.ctx = this.el.getContext('2d');
 
     this.toolbar = new ToolBar(this.toolsConfig, this.el);
+    this.toolbar.init();
+
     this.colorbar = new ColorBar(this.colorsConfig, this.el);
+    this.colorbar.init();
 
     // Grid size
     const gridSize = this.pxSize * 4;

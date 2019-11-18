@@ -7,8 +7,6 @@ export default class ColorBar {
 
     this.prevColor = '';
     this.currentColor = '';
-
-    this.init();
   }
 
   init() {

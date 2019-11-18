@@ -4,18 +4,14 @@ export default class ToolBar {
   constructor(tools, canvas) {
     this.canvas = canvas;
     this.tools = tools;
-
-    this.init();
-  }
-
-  init() {
-    this.ctx = this.canvas.getContext('2d');
-    this.matrixSize = this.canvas.width;
-    this.canvasSize = parseInt(this.canvas.style.width, 10);
-    this.pxSize = this.canvasSize / this.matrixSize;
+    this.ctx = canvas.getContext('2d');
 
     this.currentTool = '';
     this.mouseDown = false;
+  }
+
+  init() {
+    this.pxSize = parseInt(this.canvas.style.width, 10) / this.canvas.width;
 
     // Set initial tool
     if (localStorage.getItem('currentTool')) {
@@ -97,7 +93,7 @@ export default class ToolBar {
   }
 
   paintBucket() {
-    const size = this.canvasSize;
+    const size = parseInt(this.canvas.style.width, 10);
     this.ctx.fillRect(0, 0, size, size);
   }
 
