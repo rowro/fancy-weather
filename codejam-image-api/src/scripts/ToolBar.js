@@ -11,8 +11,6 @@ export default class ToolBar {
   }
 
   init() {
-    this.pxSize = parseInt(this.canvas.style.width, 10) / this.canvas.width;
-
     // Set initial tool
     if (localStorage.getItem('currentTool')) {
       this.changeTool(localStorage.getItem('currentTool'));
@@ -47,11 +45,12 @@ export default class ToolBar {
   }
 
   getPixelPosition({ x, y }) {
-    const roundToPxSize = (num) => Math.round(num / this.pxSize) * this.pxSize;
+    const pxSize = parseInt(this.canvas.style.width, 10) / this.canvas.width;
+    const roundToPxSize = (num) => Math.round(num / pxSize) * pxSize;
 
     return {
-      x: roundToPxSize(x / this.pxSize - (this.pxSize / 2)),
-      y: roundToPxSize(y / this.pxSize - (this.pxSize / 2)),
+      x: roundToPxSize(x / pxSize - (pxSize / 2)),
+      y: roundToPxSize(y / pxSize - (pxSize / 2)),
     };
   }
 
@@ -106,8 +105,9 @@ export default class ToolBar {
   }
 
   pencil(pos) {
+    const pxSize = parseInt(this.canvas.style.width, 10) / this.canvas.width;
     const currentPos = this.getPixelPosition(pos);
-
-    this.ctx.fillRect(currentPos.x, currentPos.y, this.pxSize, this.pxSize);
+    console.log(pxSize);
+    this.ctx.fillRect(currentPos.x, currentPos.y, pxSize, pxSize);
   }
 }

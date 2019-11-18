@@ -35,12 +35,9 @@ export default class Canvas {
     this.colorbar = new ColorBar(this.colorsConfig, this.el);
     this.colorbar.init();
 
-    // Grid size
-    const gridSize = this.pxSize * 4;
-    this.container.style.backgroundSize = `${gridSize}px ${gridSize}px`;
-
     this.loadCanvas();
     this.attachEvents();
+    this.drawGrid();
   }
 
   createCanvas(canvasSize, matrixSize) {
@@ -58,9 +55,15 @@ export default class Canvas {
     return el;
   }
 
+  drawGrid() {
+    const gridSize = (this.pxSize === 4) ? this.pxSize * 4 : this.pxSize * 2;
+    this.container.style.backgroundSize = `${gridSize}px ${gridSize}px`;
+  }
+
   // Save canvas to localstorage
   saveCanvas() {
-    localStorage.setItem('canvasImage', this.el.toDataURL());
+    const imageData = this.el.toDataURL();
+    localStorage.setItem('canvasImage', imageData);
   }
 
   // Load canvas from localstorage
@@ -69,6 +72,7 @@ export default class Canvas {
       prevColor: localStorage.getItem('prevColor'),
       currentColor: localStorage.getItem('currentColor'),
       image: localStorage.getItem('canvasImage'),
+      matrixSize: localStorage.getItem('matrixSize'),
     };
 
     // Set initial color
@@ -81,13 +85,18 @@ export default class Canvas {
       this.colorbar.changeColor('green');
     }
 
+    // Set canvas size
+    if (initial.matrixSize) {
+      this.matrixSize = initial.matrixSize;
+    }
+
     // Restore canvas from localstorage
     if (initial.image) {
       const img = new Image();
       img.src = initial.image;
       img.onload = () => {
         this.isImageLoaded = true;
-        this.ctx.drawImage(img, 0, 0);
+        this.drawImage(img);
       };
     }
   }
@@ -191,5 +200,18 @@ export default class Canvas {
 
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
+  }
+
+  changeMatrixSize(size) {
+
+    this.saveCanvas();
+    localStorage.setItem('matrixSize', size);
+
+    this.matrixSize = size;
+    this.el.width = size;
+    this.el.height = size;
+    this.drawGrid();
+
+    this.loadCanvas();
   }
 }
