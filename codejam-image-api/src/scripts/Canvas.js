@@ -13,6 +13,7 @@ export default class Canvas {
     this.loadImageForm = loadImageForm;
     this.toolsConfig = tools;
     this.colorsConfig = colors;
+    this.isImageLoaded = false;
   }
 
   get pxSize() {
@@ -32,8 +33,6 @@ export default class Canvas {
 
     this.loadCanvas();
     this.attachEvents();
-
-    // this.getImageLink();
   }
 
   createCanvas(canvasSize, matrixSize) {
@@ -133,6 +132,7 @@ export default class Canvas {
 
     img.onload = () => {
       this.clearCanvas();
+      this.isImageLoaded = true;
       this.drawImage(img);
     };
   }
@@ -158,6 +158,25 @@ export default class Canvas {
       img.width * this.pxSize, img.height * this.pxSize,
       pos.x, pos.y, rect.width, rect.height);
 
+    this.saveCanvas();
+  }
+
+  toGrayScale() {
+    if (!this.isImageLoaded) {
+      window.alert('Загрузите изображение');
+      return;
+    }
+
+    const imageData = this.ctx.getImageData(0, 0, this.canvasSize, this.canvasSize);
+    const { data } = imageData;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      data[i] = avg; // red
+      data[i + 1] = avg; // green
+      data[i + 2] = avg; // blue
+    }
+    this.ctx.putImageData(imageData, 0, 0);
     this.saveCanvas();
   }
 
