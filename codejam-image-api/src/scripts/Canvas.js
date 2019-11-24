@@ -5,12 +5,11 @@ import CHANGE_COLOR from './events';
 
 export default class Canvas {
   constructor({
-    container, canvasSize, matrixSize, loadImageForm, tools, colors,
+    container, canvasSize, matrixSize, tools, colors,
   }) {
     this.container = container;
     this.canvasSize = canvasSize;
     this.matrixSize = matrixSize;
-    this.loadImageForm = loadImageForm;
     this.toolsConfig = tools;
     this.colorsConfig = colors;
     this.isImageLoaded = false;
@@ -127,32 +126,6 @@ export default class Canvas {
     document.addEventListener(CHANGE_COLOR, (e) => {
       this.colorbar.changeColor(e.detail);
     });
-
-    // On submit image load
-    this.loadImageForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const city = new FormData(e.target).get('city');
-      this.loadImage(city);
-    });
-  }
-
-  async loadImage(city) {
-    const rootUrl = 'https://api.unsplash.com/photos/random';
-    const clientId = 'dc69a3a5c7307e69223737cc39b69f1cd4cf001aaa6d2e58b63179f0a25f702a';
-    const url = `${rootUrl}?query=town,${city}&client_id=${clientId}&w=${this.canvasSize}`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-    const img = new Image();
-    img.src = data.urls.custom;
-    img.crossOrigin = 'anonymous';
-
-    img.onload = () => {
-      this.clearCanvas();
-      this.isImageLoaded = true;
-      this.drawImage(img);
-    };
   }
 
   drawImage(img) {

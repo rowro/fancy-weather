@@ -3,12 +3,11 @@ import 'babel-polyfill';
 import './styles/main.scss';
 import netlifyIdentity from 'netlify-identity-widget';
 
+import ImageLoader from './scripts/ImageLoader';
 import Canvas from './scripts/Canvas';
 
 document.addEventListener('DOMContentLoaded', () => {
-  netlifyIdentity.init();
-
-  const config = {
+  const canvasConfig = {
     container: document.querySelector('#canvas'),
     canvasSize: 512,
     matrixSize: 128,
@@ -36,6 +35,28 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   };
 
-  window.canvas = new Canvas(config);
+  netlifyIdentity.init();
+
+  window.canvas = new Canvas(canvasConfig);
   window.canvas.init();
+
+  const imageLoaderConfig = {
+    apiService: 'unsplash',
+    apiKey: 'dc69a3a5c7307e69223737cc39b69f1cd4cf001aaa6d2e58b63179f0a25f702a',
+  };
+
+  const unsplashImageLoader = new ImageLoader(imageLoaderConfig);
+  const loadImageForm = document.querySelector('#load-image-form');
+
+  loadImageForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const city = new FormData(e.target).get('city');
+    unsplashImageLoader.loadCityImage(city)
+      .then((img) => {
+        window.canvas.clearCanvas();
+        window.canvas.isImageLoaded = true;
+        window.canvas.drawImage(img);
+      });
+  });
 });
