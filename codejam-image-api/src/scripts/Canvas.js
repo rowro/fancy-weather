@@ -1,7 +1,13 @@
 import ToolBar from './ToolBar';
 import ColorBar from './ColorBar';
 
-import CHANGE_COLOR from './events';
+import {
+  CHANGE_COLOR,
+  STORAGE_MATRIX_SIZE,
+  STORAGE_CANVAS_IMAGE,
+  STORAGE_PREV_COLOR,
+  STORAGE_CURRENT_COLOR,
+} from './constants';
 
 export default class Canvas {
   constructor({
@@ -25,6 +31,8 @@ export default class Canvas {
   }
 
   init() {
+    this.matrixSize = localStorage.getItem(STORAGE_MATRIX_SIZE) || this.matrixSize;
+
     this.el = this.createCanvas(this.canvasSize, this.matrixSize);
     this.ctx = this.el.getContext('2d');
 
@@ -62,16 +70,16 @@ export default class Canvas {
   // Save canvas to localstorage
   saveCanvas() {
     const imageData = this.el.toDataURL();
-    localStorage.setItem('canvasImage', imageData);
+    localStorage.setItem(STORAGE_CANVAS_IMAGE, imageData);
   }
 
   // Load canvas from localstorage
   loadCanvas() {
     const initial = {
-      prevColor: localStorage.getItem('prevColor'),
-      currentColor: localStorage.getItem('currentColor'),
-      image: localStorage.getItem('canvasImage'),
-      matrixSize: localStorage.getItem('matrixSize'),
+      prevColor: localStorage.getItem(STORAGE_PREV_COLOR),
+      currentColor: localStorage.getItem(STORAGE_CURRENT_COLOR),
+      image: localStorage.getItem(STORAGE_CANVAS_IMAGE),
+      matrixSize: localStorage.getItem(STORAGE_MATRIX_SIZE),
     };
 
     // Set initial color
@@ -132,7 +140,6 @@ export default class Canvas {
     const width = img.naturalWidth;
     const height = img.naturalHeight;
     const size = this.canvasSize;
-
     const ratio = (width > height) ? width / height : height / width;
 
     const rect = {
@@ -176,8 +183,8 @@ export default class Canvas {
   }
 
   changeMatrixSize(size) {
+    localStorage.setItem(STORAGE_MATRIX_SIZE, size);
     this.saveCanvas();
-    localStorage.setItem('matrixSize', size);
 
     this.matrixSize = size;
     this.el.width = size;

@@ -1,4 +1,7 @@
-import CHANGE_COLOR from './events';
+import {
+  CHANGE_COLOR,
+  STORAGE_CURRENT_TOOL,
+} from './constants';
 
 export default class ToolBar {
   constructor(tools, canvas) {
@@ -12,8 +15,8 @@ export default class ToolBar {
 
   init() {
     // Set initial tool
-    if (localStorage.getItem('currentTool')) {
-      this.changeTool(localStorage.getItem('currentTool'));
+    if (localStorage.getItem(STORAGE_CURRENT_TOOL)) {
+      this.changeTool(localStorage.getItem(STORAGE_CURRENT_TOOL));
     } else {
       this.changeTool('pencil');
     }
@@ -56,7 +59,7 @@ export default class ToolBar {
 
   changeTool(tool) {
     this.currentTool = tool;
-    localStorage.setItem('currentTool', this.currentTool);
+    localStorage.setItem(STORAGE_CURRENT_TOOL, this.currentTool);
 
     Object.values(this.tools).forEach((item) => {
       item.classList.remove('toolbar__btn--active');

@@ -1,3 +1,8 @@
+import {
+  STORAGE_PREV_COLOR,
+  STORAGE_CURRENT_COLOR,
+} from './constants';
+
 export default class ColorBar {
   constructor({ currentColorBtn, prevColorBtn, defaultColors }, canvas) {
     this.ctx = canvas.getContext('2d');
@@ -30,8 +35,8 @@ export default class ColorBar {
     this.prevColor = (!this.prevColor) ? color : this.currentColor;
     this.currentColor = color;
 
-    localStorage.setItem('prevColor', this.prevColor);
-    localStorage.setItem('currentColor', this.currentColor);
+    localStorage.setItem(STORAGE_PREV_COLOR, this.prevColor);
+    localStorage.setItem(STORAGE_CURRENT_COLOR, this.currentColor);
 
     this.ctx.fillStyle = this.currentColor;
     this.currentColorEl.querySelector('.color-icon').style.backgroundColor = this.currentColor;
