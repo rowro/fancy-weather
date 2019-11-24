@@ -11,7 +11,21 @@ document.addEventListener('DOMContentLoaded', () => {
     container: document.querySelector('#canvas'),
     canvasSize: 512,
     matrixSize: 128,
-    loadImageForm: document.querySelector('#load-image-form'),
+    grayscaleBtn: document.querySelector('#grayscale-btn'),
+    sizes: [
+      {
+        size: 128,
+        el: document.querySelector('#set-size-btn-128'),
+      },
+      {
+        size: 256,
+        el: document.querySelector('#set-size-btn-256'),
+      },
+      {
+        size: 512,
+        el: document.querySelector('#set-size-btn-512'),
+      },
+    ],
     tools: {
       paintBucket: document.querySelector('#paint-bucket-btn'),
       eyedropper: document.querySelector('#eyedropper-btn'),
@@ -37,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   netlifyIdentity.init();
 
-  window.canvas = new Canvas(canvasConfig);
-  window.canvas.init();
+  const canvas = new Canvas(canvasConfig);
+  canvas.init();
 
   const imageLoaderConfig = {
     apiService: 'unsplash',
@@ -54,9 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const city = new FormData(e.target).get('city');
     unsplashImageLoader.loadCityImage(city)
       .then((img) => {
-        window.canvas.clearCanvas();
-        window.canvas.isImageLoaded = true;
-        window.canvas.drawImage(img);
+        canvas.clearCanvas();
+        canvas.isImageLoaded = true;
+        canvas.drawImage(img);
       });
   });
 });

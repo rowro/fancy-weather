@@ -11,11 +11,13 @@ import {
 
 export default class Canvas {
   constructor({
-    container, canvasSize, matrixSize, tools, colors,
+    container, canvasSize, matrixSize, grayscaleBtn, sizes, tools, colors,
   }) {
     this.container = container;
     this.canvasSize = canvasSize;
     this.matrixSize = matrixSize;
+    this.sizes = sizes;
+    this.grayscaleBtn = grayscaleBtn;
     this.toolsConfig = tools;
     this.colorsConfig = colors;
     this.isImageLoaded = false;
@@ -133,6 +135,18 @@ export default class Canvas {
     // On change color by eyedropper
     document.addEventListener(CHANGE_COLOR, (e) => {
       this.colorbar.changeColor(e.detail);
+    });
+
+    // On change size
+    this.sizes.forEach((item) => {
+      item.el.addEventListener('click', () => {
+        this.changeMatrixSize(item.size);
+      });
+    });
+
+    // B&W
+    this.grayscaleBtn.addEventListener('click', () => {
+      this.toGrayScale();
     });
   }
 
