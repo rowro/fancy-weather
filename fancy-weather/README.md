@@ -1,6 +1,5 @@
-# Codejam image-api
+# Fancy Weather
 
-https://codejam-image-api-rowro.netlify.com/
 
 Dev:  
 `npm run start`
