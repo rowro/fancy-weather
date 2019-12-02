@@ -1,0 +1,32 @@
+.today-weather {
+  grid-area: today-weather;
+
+  &__city {
+    font-weight: bold;
+    font-size: 44px;
+    line-height: 54px;
+    text-transform: uppercase;
+  }
+
+  &__date {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  &__temp {
+    position: relative;
+    font-weight: bold;
+    font-size: 306px;
+    line-height: 373px;
+    text-transform: uppercase;
+
+    sup {
+      position: absolute;
+      top: 80px;
+      left: 320px;
+      font-size: 100px;
+      line-height: 0;
+    }
+  }
+}

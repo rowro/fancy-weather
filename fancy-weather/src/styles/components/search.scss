@@ -1,0 +1,32 @@
+.search {
+  grid-area: search;
+  display: flex;
+
+  &__input {
+    width: 100%;
+    padding: 13px 15px;
+    background: rgba(76, 82, 85, 0.4);
+    border: 1px solid rgba(228, 227, 227, 0.2);
+    border-radius: 5px 0 0 5px;
+    color: #fff;
+    font-size: 14px;
+
+    &::placeholder {
+      color: #fff;
+    }
+  }
+
+  &__btn {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 100px;
+    height: 44px;
+    background: rgba(174, 181, 185, 0.5);
+    border-radius: 0 5px 5px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 0;
+    outline: 0;
+    color: #fff;
+  }
+}
