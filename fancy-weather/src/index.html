@@ -9,69 +9,83 @@
 </head>
 <body style="background-image: url('<%=require(`./assets/images/bg.png`)%>')">
 <main id="app" class="app">
+    <div class="grid">
+        <form class="search" action="#">
+            <input class="search__input" type="search" placeholder="Search city or ZIP">
+            <button class="search__btn" type="submit">Search</button>
+        </form>
 
-    <form class="search" action="#">
-        <input class="search__input" type="search" placeholder="Search city or ZIP">
-        <button class="search__btn" type="submit">Search</button>
-    </form>
+        <div class="actions">
+            <button class="actions__change-image"></button>
+            <select class="actions__lang">
+                <option value="en">en</option>
+                <option value="ru">ru</option>
+                <option value="be">be</option>
+            </select>
+            <div class="actions__measure">
+                <div class="actions__measure-item">
+                    <input id="fahrenheit-radio" type="radio" value="F" name="measure">
+                    <label for="fahrenheit-radio">°F</label>
+                </div>
+                <div class="actions__measure-item">
+                    <input id="#celsium-radio" type="radio" value="C" name="measure" checked>
+                    <label for="#celsium-radio">°C</label>
+                </div>
+            </div>
+        </div>
 
-    <div class="actions">
-        <button class="actions__change-image">Img</button>
-        <select class="actions__language">
-            <option value="en">en</option>
-            <option value="ru">ru</option>
-            <option value="be">be</option>
-        </select>
-        <div class="actions__set-measurement">
-            <label><input type="radio" value="F">°F</label>
-            <label><input type="radio" value="C">°C</label>
+        <div class="today-weather">
+            <div class="today-weather__city">Minsk, Belarus</div>
+            <div class="today-weather__date">
+                Mon 28 October
+                <div class="today-weather__time">17:23</div>
+            </div>
+            <div class="today-weather__content">
+                <div class="today-weather__temp">
+                    10<sup>°</sup>
+                    <i class="icon icon--clouds"></i>
+                </div>
+                <div class="today-weather__info">
+                    <div>overcast</div>
+                    <div>Feels like: 7°</div>
+                    <div>Wind: 2 m/s</div>
+                    <div>Humidity: 83%</div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="three-days-weather">
+            <li class="three-days-weather__item">
+                <div class="three-days-weather__day">Tuesday</div>
+                <div class="three-days-weather__temp">
+                    7°
+                    <i class="icon icon--few-clouds"></i>
+                </div>
+            </li>
+            <li class="three-days-weather__item">
+                <div class="three-days-weather__day">Wednesday</div>
+                <div class="three-days-weather__temp">
+                    6°
+                    <i class="icon icon--clouds"></i>
+                </div>
+            </li>
+            <li class="three-days-weather__item">
+                <div class="three-days-weather__day">Thursday</div>
+                <div class="three-days-weather__temp">
+                    3°
+                    <i class="icon icon--clouds"></i>
+                </div>
+            </li>
+        </ul>
+
+        <div class="location">
+            <img class="location__map" src="<%=require(`./assets/images/map.png`)%>" alt="map">
+            <div class="location__position">
+                <div>Latitude: 53°54'</div>
+                <div>Longitude: 27°34'</div>
+            </div>
         </div>
     </div>
-
-    <div class="today-weather">
-        <div class="today-weather__city">Minsk, Belarus</div>
-        <div class="today-weather__date">Mon 28 October 17:23</div>
-        <div class="today-weather__temp">10<sup>°</sup></div>
-        <div class="today-weather__info">
-            <div>overcast</div>
-            <div>Feels like: 7°</div>
-            <div>Wind: 2 m/s</div>
-            <div>Humidity: 83%</div>
-        </div>
-    </div>
-
-    <ul class="three-days-weather">
-        <li class="three-days-weather__item">
-            <div class="three-days-weather__day">Tuesday</div>
-            <div class="three-days-weather__temp">
-                <span>7°</span>
-                <div class="three-days-weather__icon"></div>
-            </div>
-        </li>
-        <li class="three-days-weather__item">
-            <div class="three-days-weather__day">Wednesday</div>
-            <div class="three-days-weather__temp">
-                <span>6°</span>
-                <div class="three-days-weather__icon"></div>
-            </div>
-        </li>
-        <li class="three-days-weather__item">
-            <div class="three-days-weather__day">Thursday</div>
-            <div class="three-days-weather__temp">
-                <span>3°</span>
-                <div class="three-days-weather__icon"></div>
-            </div>
-        </li>
-    </ul>
-
-    <div class="location">
-        <img class="location__map" src="<%=require(`./assets/images/map.png`)%>" alt="map">
-        <div class="location__position">
-            <div>Latitude: 53°54'</div>
-            <div>Longitude: 27°34'</div>
-        </div>
-    </div>
-
 </main>
 </body>
 </html>

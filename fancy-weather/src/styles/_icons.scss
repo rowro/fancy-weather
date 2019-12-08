@@ -1,8 +1,18 @@
 .icon {
   display: inline-block;
-  width: 20px;
-  height: 20px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+
+  &--clouds {
+    width: 66px;
+    height: 42px;
+    background-image: url('../assets/icons/clouds.svg');
+  }
+
+  &--few-clouds {
+    width: 66px;
+    height: 42px;
+    background-image: url('../assets/icons/few-clouds.svg');
+  }
 }

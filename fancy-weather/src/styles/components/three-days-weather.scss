@@ -1,5 +1,37 @@
 .three-days-weather {
   grid-area: three-days-weather;
   display: flex;
+  margin-top: 35px;
   list-style: none;
+
+  &__item {
+    margin-right: 50px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__day {
+    margin-bottom: 3px;
+    font-weight: bold;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+
+  &__temp {
+    position: relative;
+    display: flex;
+    font-weight: 600;
+    font-size: 80px;
+    line-height: 98px;
+    text-transform: uppercase;
+
+    .icon {
+      width: 66px;
+      height: 42px;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
 }

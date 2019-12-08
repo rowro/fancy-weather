@@ -1,7 +1,9 @@
 .today-weather {
   grid-area: today-weather;
+  margin-top: 57px;
 
   &__city {
+    margin-bottom: 4px;
     font-weight: bold;
     font-size: 44px;
     line-height: 54px;
@@ -9,24 +11,53 @@
   }
 
   &__date {
+    display: flex;
     font-weight: 600;
     font-size: 24px;
     line-height: 29px;
+  }
+
+  &__time {
+    margin-left: 18px;
+  }
+
+  &__content {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 20px;
   }
 
   &__temp {
     position: relative;
     font-weight: bold;
     font-size: 306px;
-    line-height: 373px;
+    line-height: 1;
     text-transform: uppercase;
 
     sup {
       position: absolute;
-      top: 80px;
-      left: 320px;
+      top: 100px;
+      left: 355px;
       font-size: 100px;
       line-height: 0;
+      z-index: 2;
     }
+
+    .icon {
+      position: absolute;
+      top: -10px;
+      left: 340px;
+      width: 163px;
+      height: 103px;
+    }
+  }
+
+  &__info {
+    margin-left: 82px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.68;
+    text-transform: uppercase;
   }
 }
