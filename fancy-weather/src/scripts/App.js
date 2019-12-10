@@ -21,6 +21,7 @@ export default class App {
       ipInfoToken: '30944dcadcf9c2',
       openCageToken: '822d82d367f44178bff7997359f2367b',
       mapboxToken: 'pk.eyJ1Ijoicm93cm8iLCJhIjoiY2szeXYxeG83MDE1ZjNscWNsdTMxazl2MiJ9.2IO5-laEKs-5i2O6JlTZXw',
+      openWeatherToken: '4418d175a55a0916436fa10a6f7e1bc4',
     };
 
     this.api = new API(apiConfig);
@@ -38,8 +39,11 @@ export default class App {
     this.api.getUserPosition()
       .then((data) => {
         console.log(data);
-        this.todayWeather.render(data);
         this.location.render(data);
+        this.api.getWeather(data.city)
+          .then((weatherData) => {
+            this.todayWeather.render({ ...weatherData.todayWeather, ...data });
+          });
       })
       .catch(() => {
         this.api.getIpData()

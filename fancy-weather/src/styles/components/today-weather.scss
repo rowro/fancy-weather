@@ -34,27 +34,23 @@
     line-height: 1;
     text-transform: uppercase;
 
-    span {
-      position: relative;
-
-      &::after {
-        content: '°';
-        position: absolute;
-        top: 135px;
-        left: 360px;
-        font-size: 100px;
-        line-height: 0;
-        z-index: 2;
-      }
+    &::after {
+      content: '°';
+      position: absolute;
+      top: 90px;
+      right: -40px;
+      font-size: 100px;
+      line-height: 0;
+      z-index: 2;
     }
   }
 
   &__icon {
     position: absolute;
-    top: -10px;
-    left: 340px;
-    width: 163px;
-    height: 103px;
+    top: -20px;
+    right: -200px;
+    font-size: 130px;
+    background-size: contain;
   }
 
   &__info {

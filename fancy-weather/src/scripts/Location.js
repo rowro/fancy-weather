@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import { createEl, createBEMEl } from './helpers/createEl';
-import formatCoords from './helpers/format';
+import { formatCoords } from './helpers/format';
 
 export default class Location {
   constructor(parentEl, mapboxToken) {
