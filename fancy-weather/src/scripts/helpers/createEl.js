@@ -2,6 +2,7 @@
  * Create DOM element
  * @param {string} tag - default: 'div'
  * @param {string} className
+ * @param {string} id
  * @param {object} attr - HTML attributes
  * @param {string} content - element content
  * @param {Array.<HTMLElement>} elements - array of DOM elements
@@ -11,6 +12,7 @@
 export function createEl({
   tag = 'div',
   className = '',
+  id = '',
   attr = {},
   content = '',
   appendTo = null,
@@ -20,6 +22,10 @@ export function createEl({
 
   if (className) {
     el.className = className;
+  }
+
+  if (id) {
+    el.id = id;
   }
 
   if (attr) {

@@ -1,31 +1,41 @@
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import { createEl, createBEMEl } from './helpers/createEl';
-import img from '../assets/images/map.png';
+import formatCoords from './helpers/format';
 
 export default class Location {
-  constructor(parentEl) {
+  constructor(parentEl, mapboxToken) {
     this.parentEl = parentEl;
     this.el = null;
+    this.mapboxToken = mapboxToken;
   }
 
-  render() {
-    const data = {
-      img,
-      latitude: '53°54',
-      longitude: '27°34',
-    };
+  renderMap(container, long, lat) {
+    mapboxgl.accessToken = this.mapboxToken;
 
+    const map = new mapboxgl.Map({
+      container,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [long, lat],
+      zoom: 9,
+    });
+
+    map.on('load', map.resize);
+  }
+
+  render(data) {
     const bemEl = createBEMEl('location');
     this.el = createEl({ className: 'location' });
 
     // Map
-    bemEl('map', { tag: 'img', attr: { src: data.img }, appendTo: this.el });
+    const mapEl = bemEl('map', { appendTo: this.el });
+    this.renderMap(mapEl, data.longitude, data.latitude);
 
     // Position
     bemEl('position', {
       appendTo: this.el,
       elements: [
-        bemEl('latitude', { content: `Latitude: ${data.latitude}` }),
-        bemEl('longitude', { content: `Longitude: ${data.longitude}` }),
+        bemEl('latitude', { content: `Latitude: ${formatCoords(data.latitude)}` }),
+        bemEl('longitude', { content: `Longitude: ${formatCoords(data.longitude)}` }),
       ],
     });
 

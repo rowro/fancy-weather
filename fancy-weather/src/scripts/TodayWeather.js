@@ -6,7 +6,7 @@ export default class TodayWeather {
     this.el = null;
   }
 
-  render() {
+  render(locationData) {
     const data = {
       city: 'Minsk, Belarus',
       date: 'Mon 28 October',
