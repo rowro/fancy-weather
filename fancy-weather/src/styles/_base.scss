@@ -21,7 +21,7 @@ body {
   font-size: 16px;
   line-height: 24px;
   font-family: 'Montserrat', sans-serif;
-  //background-repeat: no-repeat;
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
@@ -38,7 +38,7 @@ body {
   grid-template-columns: 1fr 375px;
   grid-template-areas: 'actions search'
                        'today-weather location'
-                       'three-days-weather location';
+                       'forecast location';
   max-width: 1260px;
   height: 100%;
   margin: 0 auto;

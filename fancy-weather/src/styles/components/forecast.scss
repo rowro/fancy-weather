@@ -1,5 +1,5 @@
-.three-days-weather {
-  grid-area: three-days-weather;
+.forecast {
+  grid-area: forecast;
   display: flex;
   margin-top: 35px;
   list-style: none;
@@ -26,12 +26,10 @@
     font-size: 80px;
     line-height: 98px;
     text-transform: uppercase;
+  }
 
-    .icon {
-      width: 66px;
-      height: 42px;
-      margin-top: 10px;
-      margin-left: 10px;
-    }
+  &__icon {
+    font-size: 66px;
+    margin-left: 10px;
   }
 }

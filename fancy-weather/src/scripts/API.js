@@ -40,9 +40,7 @@ export default class API {
 
     const { latitude, longitude } = res.coords;
 
-    const cityRes = await this.getCityFromCoords(latitude, longitude);
-    const { city, country } = cityRes.results[0].components;
-    const timezone = cityRes.results[0].annotations.timezone.name;
+    const { city, country, timezone } = await this.getCityFromCoords(latitude, longitude);
 
     return {
       latitude,
@@ -86,7 +84,13 @@ export default class API {
     const response = await fetch(rootUrl + query);
     const data = await response.json();
 
-    return data;
+    const { city, country, state } = data.results[0].components;
+
+    return {
+      city: city || state,
+      country,
+      timezone: data.results[0].annotations.timezone.name,
+    };
   }
 
   async getWeather(city) {
@@ -99,14 +103,38 @@ export default class API {
     const todayWeather = data.list.find(
       (item) => (Date.now() < new Date(item.dt * 1000)),
     );
-    console.log(todayWeather);
-    console.log(data);
+
+    const currentDay = new Date().getDate();
+
+    // Get three days weather from array
+    const forecast = data.list
+      .filter((item) => {
+        const itemDay = new Date(item.dt * 1000).getDate();
+        return (itemDay > currentDay) && (itemDay < (currentDay + 3));
+      })
+      .slice(-12)
+      .reduce((res, item, index) => {
+        const chunkIndex = Math.floor(index / 4);
+
+        if (!res[chunkIndex]) res[chunkIndex] = [];
+        res[chunkIndex].push(item);
+
+        return res;
+      }, [])
+      .map((day, index) => ({
+        date: new Date().setDate(currentDay + index + 1),
+        // Calc average temp
+        temp: Math.floor(day.reduce((res, item) => res + item.main.temp, 0) / day.length),
+        icon: day[0].weather[0].icon,
+      }));
 
     return {
+      forecast,
       todayWeather: {
         icon: todayWeather.weather[0].icon,
         description: todayWeather.weather[0].description,
         temp: Math.floor(todayWeather.main.temp),
+        feelsLike: Math.floor(todayWeather.main.feels_like),
         wind: Math.floor(todayWeather.wind.speed),
         humidity: Math.floor(todayWeather.main.humidity),
       },

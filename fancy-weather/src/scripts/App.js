@@ -2,7 +2,7 @@ import API from './API';
 import Search from './Search';
 import Actions from './Actions';
 import TodayWeather from './TodayWeather';
-import ThreeDaysWeather from './ThreeDaysWeather';
+import Forecast from './Forecast';
 import Location from './Location';
 
 export default class App {
@@ -29,28 +29,38 @@ export default class App {
     this.search = new Search(this.gridEl);
     this.actions = new Actions(this.gridEl);
     this.todayWeather = new TodayWeather(this.gridEl);
-    this.threeDaysWeather = new ThreeDaysWeather(this.gridEl);
+    this.forecast = new Forecast(this.gridEl);
     this.location = new Location(this.gridEl, apiConfig.mapboxToken);
 
     this.search.render();
     this.actions.render();
-    this.threeDaysWeather.render();
 
     this.api.getUserPosition()
       .then((data) => {
-        console.log(data);
         this.location.render(data);
         this.api.getWeather(data.city)
           .then((weatherData) => {
             this.todayWeather.render({ ...weatherData.todayWeather, ...data });
+            this.forecast.render({
+              items: weatherData.forecast,
+              timezone: data.timezone,
+              lang: 'en',
+            });
           });
       })
       .catch(() => {
         this.api.getIpData()
           .then((data) => {
-            console.log(data);
-            this.todayWeather.render(data);
             this.location.render(data);
+            this.api.getWeather(data.city)
+              .then((weatherData) => {
+                this.todayWeather.render({ ...weatherData.todayWeather, ...data });
+                this.forecast.render({
+                  items: weatherData.forecast,
+                  timezone: data.timezone,
+                  lang: 'en',
+                });
+              });
           });
       });
   }

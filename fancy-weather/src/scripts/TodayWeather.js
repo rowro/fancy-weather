@@ -1,6 +1,5 @@
 import { createEl, createBEMEl } from './helpers/createEl';
-import { formatDate, formatTime } from './helpers/format';
-import { apparentTemp } from './helpers/temperature';
+import { formatDate, formatTime } from './helpers/date';
 
 export default class TodayWeather {
   constructor(parentEl) {
@@ -24,6 +23,7 @@ export default class TodayWeather {
       elements: [timeEl],
     });
 
+    // Update time every minute
     setInterval(() => {
       timeEl.innerText = formatTime(new Date(), 'en', data.timezone);
     }, 1000 * 60);
@@ -43,7 +43,7 @@ export default class TodayWeather {
         bemEl('info', {
           elements: [
             bemEl('description', { content: data.description }),
-            bemEl('feels-like', { content: `Feels like: ${apparentTemp(data.temp, data.wind)}°` }),
+            bemEl('feels-like', { content: `Feels like: ${data.feelsLike}°` }),
             bemEl('wind', { content: `Wind: ${data.wind} m/s` }),
             bemEl('humidity', { content: `Humidity: ${data.humidity}%` }),
           ],

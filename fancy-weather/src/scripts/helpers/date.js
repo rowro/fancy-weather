@@ -1,11 +1,5 @@
-/**
- * Format latitude and longitude
- * Example: 32.4544 => 32°45
- * @param coords
- * @returns {string}
- */
-export function formatCoords(coords) {
-  return Number(coords).toFixed(2).replace('.', '°');
+export function localDate(timezone) {
+  return new Date(new Date().toLocaleString('en', { timeZone: timezone }));
 }
 
 export function formatDate(date, lang, timezone) {
@@ -26,6 +20,15 @@ export function formatTime(date, lang, timezone) {
     hour12: false,
     hour: 'numeric',
     minute: 'numeric',
+  });
+
+  return formatter.format(date);
+}
+
+export function formatWeek(date, lang, timezone) {
+  const formatter = new Intl.DateTimeFormat(lang, {
+    timeZone: timezone,
+    weekday: 'long',
   });
 
   return formatter.format(date);
