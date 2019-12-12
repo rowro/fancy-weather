@@ -1,6 +1,11 @@
 .search {
   grid-area: search;
   display: flex;
+  margin-top: 20px;
+
+  @media (min-width: 576px) {
+    margin-top: 0;
+  }
 
   &__input {
     width: 100%;

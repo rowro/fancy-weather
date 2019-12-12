@@ -1,0 +1,5 @@
+$default-base: 16;
+
+@function rem($px, $base: $default-base) {
+  @return #{$px/$base}rem;
+}

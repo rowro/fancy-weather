@@ -55,6 +55,11 @@
 
   &__measure {
     display: flex;
+    margin-left: auto;
+
+    @media (min-width: 576px) {
+      margin-left: 0;
+    }
 
     &-item {
       &:first-child label {

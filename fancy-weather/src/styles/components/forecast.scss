@@ -1,11 +1,25 @@
 .forecast {
   grid-area: forecast;
+  justify-self: center;
   display: flex;
-  margin-top: 35px;
+  margin-top: 40px;
   list-style: none;
 
+  @media (min-width: 992px) {
+    margin-top: 0;
+    justify-self: flex-start;
+  }
+
+  @media (min-width: 1200px) {
+    margin-top: 35px;
+  }
+
   &__item {
-    margin-right: 50px;
+    margin-right: 25px;
+
+    @media (min-width: 992px) {
+      margin-right: 50px;
+    }
 
     &:last-child {
       margin-right: 0;
@@ -15,21 +29,31 @@
   &__day {
     margin-bottom: 3px;
     font-weight: bold;
-    font-size: 22px;
+    font-size: rem(22);
     text-transform: uppercase;
   }
 
   &__temp {
     position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     font-weight: 600;
-    font-size: 80px;
-    line-height: 98px;
+    font-size: rem(80);
+    line-height: rem(98);
     text-transform: uppercase;
+
+    @media (min-width: 420px) {
+      flex-direction: row;
+      align-items: flex-start;
+    }
   }
 
   &__icon {
-    font-size: 66px;
-    margin-left: 10px;
+    font-size: rem(66);
+
+    @media (min-width: 420px) {
+      margin-left: 10px;
+    }
   }
 }
