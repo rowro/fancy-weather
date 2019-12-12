@@ -5,6 +5,7 @@ export default class API {
     this.ipInfoToken = config.ipInfoToken;
     this.openCageToken = config.openCageToken;
     this.openWeatherToken = config.openWeatherToken;
+    this.unsplashToken = config.unsplashToken;
   }
 
   /**
@@ -139,5 +140,19 @@ export default class API {
         humidity: Math.floor(todayWeather.main.humidity),
       },
     };
+  }
+
+  async getPhoto() {
+    const rootUrl = 'https://api.unsplash.com/photos/random';
+    const query = `?orientation=landscape&per_page=1&query=nature&client_id=${this.unsplashToken}`;
+    const response = await fetch(rootUrl + query);
+    const data = await response.json();
+
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = data.urls.full;
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+    });
   }
 }

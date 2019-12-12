@@ -22,6 +22,7 @@ export default class App {
       openCageToken: '822d82d367f44178bff7997359f2367b',
       mapboxToken: 'pk.eyJ1Ijoicm93cm8iLCJhIjoiY2szeXYxeG83MDE1ZjNscWNsdTMxazl2MiJ9.2IO5-laEKs-5i2O6JlTZXw',
       openWeatherToken: '4418d175a55a0916436fa10a6f7e1bc4',
+      unsplashToken: '0edb2e37a81d23e73549fa32764fe5c969523822f0fecba9c12f0641e24f2e2c',
     };
 
     this.api = new API(apiConfig);
@@ -40,6 +41,10 @@ export default class App {
         this.location.render(data);
         this.api.getWeather(data.city)
           .then((weatherData) => {
+            this.api.getPhoto()
+              .then((img) => {
+                document.body.style.backgroundImage = `url(${img.src})`;
+              });
             this.todayWeather.render({ ...weatherData.todayWeather, ...data });
             this.forecast.render({
               items: weatherData.forecast,
@@ -54,6 +59,10 @@ export default class App {
             this.location.render(data);
             this.api.getWeather(data.city)
               .then((weatherData) => {
+                this.api.getPhoto()
+                  .then((img) => {
+                    document.body.style.backgroundImage = `url(${img.src})`;
+                  });
                 this.todayWeather.render({ ...weatherData.todayWeather, ...data });
                 this.forecast.render({
                   items: weatherData.forecast,
