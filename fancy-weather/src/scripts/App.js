@@ -5,6 +5,8 @@ import TodayWeather from './TodayWeather';
 import Forecast from './Forecast';
 import Location from './Location';
 
+import { getSeason, localDate, getDayNight } from './helpers/date';
+
 export default class App {
   constructor({ rootEl }) {
     this.el = rootEl;
@@ -41,7 +43,7 @@ export default class App {
         this.location.render(data);
         this.api.getWeather(data.city)
           .then((weatherData) => {
-            this.api.getPhoto()
+            this.api.getPhoto(getSeason(localDate()), getDayNight(localDate()), weatherData.todayWeather.description, data.country, data.city)
               .then((img) => {
                 document.body.style.backgroundImage = `url(${img.src})`;
               });
@@ -51,25 +53,6 @@ export default class App {
               timezone: data.timezone,
               lang: 'en',
             });
-          });
-      })
-      .catch(() => {
-        this.api.getIpData()
-          .then((data) => {
-            this.location.render(data);
-            this.api.getWeather(data.city)
-              .then((weatherData) => {
-                this.api.getPhoto()
-                  .then((img) => {
-                    document.body.style.backgroundImage = `url(${img.src})`;
-                  });
-                this.todayWeather.render({ ...weatherData.todayWeather, ...data });
-                this.forecast.render({
-                  items: weatherData.forecast,
-                  timezone: data.timezone,
-                  lang: 'en',
-                });
-              });
           });
       });
   }

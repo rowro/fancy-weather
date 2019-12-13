@@ -142,15 +142,15 @@ export default class API {
     };
   }
 
-  async getPhoto() {
+  async getPhoto(...params) {
     const rootUrl = 'https://api.unsplash.com/photos/random';
-    const query = `?orientation=landscape&per_page=1&query=nature&client_id=${this.unsplashToken}`;
+    const query = `?orientation=landscape&per_page=1&query=${params.join(',')}&client_id=${this.unsplashToken}`;
     const response = await fetch(rootUrl + query);
     const data = await response.json();
 
     return new Promise((resolve) => {
       const img = new Image();
-      img.src = data.urls.full;
+      img.src = data.urls.regular;
       img.crossOrigin = 'anonymous';
       img.onload = () => resolve(img);
     });
