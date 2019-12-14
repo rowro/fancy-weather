@@ -8,15 +8,16 @@ export default class Forecast {
   }
 
   render(data) {
+    const lang = 'en';
     const bemEl = createBEMEl('forecast');
     this.el = createEl({ tag: 'ul', className: 'forecast' });
 
-    data.items.forEach((item) => {
+    data.forecast.forEach((item) => {
       bemEl('item', {
         tag: 'li',
         appendTo: this.el,
         elements: [
-          bemEl('day', { content: formatWeek(item.date, data.lang, data.timezone) }),
+          bemEl('day', { content: formatWeek(item.date, lang, data.timezone) }),
           bemEl('temp', {
             content: `${item.temp}°`,
             elements: [

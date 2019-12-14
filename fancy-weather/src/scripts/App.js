@@ -5,55 +5,69 @@ import TodayWeather from './TodayWeather';
 import Forecast from './Forecast';
 import Location from './Location';
 
-import { getSeason, localDate, getDayNight } from './helpers/date';
+import { getSeason, localDate, getDayTime } from './helpers/date';
 
 export default class App {
-  constructor({ rootEl }) {
+  constructor({ rootEl, apiTokens }) {
     this.el = rootEl;
-    this.gridEl = null;
+    this.apiTokens = apiTokens;
     this.data = null;
   }
 
+  async getData() {
+    const posData = await this.api.getUserPosition();
+    const weatherData = await this.api.getWeather(posData.city);
+
+    return { ...posData, ...weatherData };
+  }
+
+  async updateBgImage() {
+    const season = getSeason(localDate());
+    const dayTime = getDayTime(localDate());
+    const weather = this.data.todayWeather.description;
+    const { country, city } = this.data;
+
+    this.actions.changeImgBtn.disabled = true;
+
+    const img = await this.api.getPhoto(season, dayTime, weather, country, city);
+    document.body.style.backgroundImage = `url(${img.src})`;
+
+    this.actions.changeImgBtn.disabled = false;
+
+    return img;
+  }
+
+  appendListeners() {
+    this.actions.changeImgBtn.addEventListener('click', () => this.updateBgImage());
+  }
+
   render() {
-    this.gridEl = document.createElement('div');
-    this.gridEl.className = 'grid';
-    this.el.append(this.gridEl);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    this.el.append(grid);
 
-    const apiConfig = {
-      ipInfoToken: '30944dcadcf9c2',
-      openCageToken: '822d82d367f44178bff7997359f2367b',
-      mapboxToken: 'pk.eyJ1Ijoicm93cm8iLCJhIjoiY2szeXYxeG83MDE1ZjNscWNsdTMxazl2MiJ9.2IO5-laEKs-5i2O6JlTZXw',
-      openWeatherToken: '4418d175a55a0916436fa10a6f7e1bc4',
-      unsplashToken: '0edb2e37a81d23e73549fa32764fe5c969523822f0fecba9c12f0641e24f2e2c',
-    };
+    this.api = new API(this.apiTokens);
 
-    this.api = new API(apiConfig);
-
-    this.search = new Search(this.gridEl);
-    this.actions = new Actions(this.gridEl);
-    this.todayWeather = new TodayWeather(this.gridEl);
-    this.forecast = new Forecast(this.gridEl);
-    this.location = new Location(this.gridEl, apiConfig.mapboxToken);
+    this.search = new Search(grid);
+    this.actions = new Actions(grid);
+    this.todayWeather = new TodayWeather(grid);
+    this.forecast = new Forecast(grid);
+    this.location = new Location(grid, this.apiTokens.mapbox);
 
     this.search.render();
     this.actions.render();
 
-    this.api.getUserPosition()
+    this.appendListeners();
+
+    this.actions.changeImgBtn.disabled = false;
+
+    this.getData()
       .then((data) => {
-        this.location.render(data);
-        this.api.getWeather(data.city)
-          .then((weatherData) => {
-            this.api.getPhoto(getSeason(localDate()), getDayNight(localDate()), weatherData.todayWeather.description, data.country, data.city)
-              .then((img) => {
-                document.body.style.backgroundImage = `url(${img.src})`;
-              });
-            this.todayWeather.render({ ...weatherData.todayWeather, ...data });
-            this.forecast.render({
-              items: weatherData.forecast,
-              timezone: data.timezone,
-              lang: 'en',
-            });
-          });
+        this.data = data;
+        this.updateBgImage();
+        this.location.render(this.data);
+        this.todayWeather.render(this.data);
+        this.forecast.render(this.data);
       });
   }
 }

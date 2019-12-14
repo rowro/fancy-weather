@@ -16,7 +16,7 @@
     border-radius: 5px;
     cursor: pointer;
 
-    &:hover::after {
+    &:not(:disabled):hover::after {
       transform: rotate(180deg);
     }
 
@@ -27,6 +27,11 @@
       height: 20px;
       margin: auto;
       transition: all 0.5s;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
     }
   }
 

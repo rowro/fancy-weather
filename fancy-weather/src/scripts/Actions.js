@@ -4,6 +4,7 @@ export default class Actions {
   constructor(parentEl) {
     this.parentEl = parentEl;
     this.el = null;
+    this.changeImgBtn = null;
   }
 
   render() {
@@ -11,7 +12,7 @@ export default class Actions {
     this.el = createEl({ className: 'actions' });
 
     // Change image button
-    bemEl('change-image', { tag: 'button', appendTo: this.el });
+    this.changeImgBtn = bemEl('change-image', { tag: 'button', appendTo: this.el });
 
     // Change language
     bemEl('lang', {

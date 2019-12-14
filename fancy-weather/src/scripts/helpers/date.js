@@ -59,7 +59,7 @@ export function getSeason(date) {
   }
 }
 
-export function getDayNight(date) {
+export function getDayTime(date) {
   const hours = date.getHours();
   const isDay = hours > 6 && hours < 20;
 

@@ -33,16 +33,16 @@ export default class TodayWeather {
       appendTo: this.el,
       elements: [
         // Temperature
-        bemEl('temp', { content: `<span>${data.temp}</span>` }),
+        bemEl('temp', { content: `<span>${data.todayWeather.temp}</span>` }),
         // Weather icon
-        bemEl('icon', { tag: 'i', className: `owi owi-${data.icon}` }),
+        bemEl('icon', { tag: 'i', className: `owi owi-${data.todayWeather.icon}` }),
         // Info
         bemEl('info', {
           elements: [
-            bemEl('description', { content: data.description }),
-            bemEl('feels-like', { content: `Feels like: ${data.feelsLike}°` }),
-            bemEl('wind', { content: `Wind: ${data.wind} m/s` }),
-            bemEl('humidity', { content: `Humidity: ${data.humidity}%` }),
+            bemEl('description', { content: data.todayWeather.description }),
+            bemEl('feels-like', { content: `Feels like: ${data.todayWeather.feelsLike}°` }),
+            bemEl('wind', { content: `Wind: ${data.todayWeather.wind} m/s` }),
+            bemEl('humidity', { content: `Humidity: ${data.todayWeather.humidity}%` }),
           ],
         }),
       ],

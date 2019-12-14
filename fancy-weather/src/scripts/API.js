@@ -1,11 +1,8 @@
 import countries from '../assets/country-names';
 
 export default class API {
-  constructor(config) {
-    this.ipInfoToken = config.ipInfoToken;
-    this.openCageToken = config.openCageToken;
-    this.openWeatherToken = config.openWeatherToken;
-    this.unsplashToken = config.unsplashToken;
+  constructor(tokens) {
+    this.tokens = tokens;
   }
 
   /**
@@ -57,7 +54,7 @@ export default class API {
    * @returns {Promise<{country: {}, city: {}, timezone: {}, latitude: *, longitude: *}>}
    */
   async getIpData() {
-    const response = await fetch(`https://ipinfo.io/json?token=${this.ipInfoToken}`);
+    const response = await fetch(`https://ipinfo.io/json?token=${this.tokens.ipInfo}`);
     const data = await response.json();
 
     const loc = data.loc.split(',');
@@ -80,7 +77,7 @@ export default class API {
   async getCityFromCoords(latitude, longitude) {
     const lang = 'en';
     const rootUrl = 'https://api.opencagedata.com/geocode/v1/json?';
-    const query = `language=${lang}&q=${latitude}+${longitude}&key=${this.openCageToken}`;
+    const query = `language=${lang}&q=${latitude}+${longitude}&key=${this.tokens.openCage}`;
 
     const response = await fetch(rootUrl + query);
     const data = await response.json();
@@ -97,7 +94,7 @@ export default class API {
   async getWeather(city) {
     const lang = 'en';
     const rootUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
-    const query = `q=${city}&lang=${lang}&units=metric&APPID=${this.openWeatherToken}`;
+    const query = `q=${city}&lang=${lang}&units=metric&APPID=${this.tokens.openWeather}`;
     const response = await fetch(rootUrl + query);
     const data = await response.json();
 
@@ -144,7 +141,7 @@ export default class API {
 
   async getPhoto(...params) {
     const rootUrl = 'https://api.unsplash.com/photos/random';
-    const query = `?orientation=landscape&per_page=1&query=${params.join(',')}&client_id=${this.unsplashToken}`;
+    const query = `?orientation=landscape&per_page=1&query=${params.join(',')}&client_id=${this.tokens.unsplash}`;
     const response = await fetch(rootUrl + query);
     const data = await response.json();
 
