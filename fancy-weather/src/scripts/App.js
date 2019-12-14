@@ -27,11 +27,11 @@ export default class App {
     const season = getSeason(localDate());
     const dayTime = getDayTime(localDate());
     const weather = this.data.todayWeather.description;
-    const { country, city } = this.data;
+    const { country } = this.data;
 
     this.actions.updateImgBtn.disabled = true;
 
-    const img = await this.api.getPhoto(season, dayTime, weather, country, city);
+    const img = await this.api.getPhoto(season, dayTime, weather, country);
     document.body.style.backgroundImage = `url(${img.src})`;
 
     this.actions.updateImgBtn.disabled = false;
