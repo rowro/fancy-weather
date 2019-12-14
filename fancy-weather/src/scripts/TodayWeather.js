@@ -1,15 +1,25 @@
 import { createEl, createBEMEl } from './helpers/createEl';
 import { formatDate, formatTime } from './helpers/date';
+import toFahrenheit from './helpers/temperature';
 
 export default class TodayWeather {
   constructor(parentEl) {
     this.parentEl = parentEl;
     this.el = null;
+    this.tempEl = null;
   }
 
   render(data) {
     const bemEl = createBEMEl('today-weather');
-    this.el = createEl({ className: 'today-weather' });
+
+    this.el = document.querySelector('.today-weather');
+
+    // Create new element or clear old element
+    if (!this.el) {
+      this.el = createEl({ className: 'today-weather' });
+    } else {
+      this.el.innerHTML = '';
+    }
 
     // City
     bemEl('city', { content: `${data.city}, ${data.country}`, appendTo: this.el });
@@ -28,12 +38,18 @@ export default class TodayWeather {
       timeEl.innerText = formatTime(new Date(), 'en', data.timezone);
     }, 1000 * 60);
 
+    // Convert Celsius to Fahrenheit if needed
+    let { temp } = data.todayWeather;
+    temp = (data.measure === 'fahrenheit') ? toFahrenheit(temp) : temp;
+
+    this.tempEl = bemEl('temp', { content: `<span>${temp}</span>` });
+
     // Temperature and info
     bemEl('content', {
       appendTo: this.el,
       elements: [
         // Temperature
-        bemEl('temp', { content: `<span>${data.todayWeather.temp}</span>` }),
+        this.tempEl,
         // Weather icon
         bemEl('icon', { tag: 'i', className: `owi owi-${data.todayWeather.icon}` }),
         // Info

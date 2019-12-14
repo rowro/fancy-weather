@@ -1,0 +1,2 @@
+export const CHANGE_MEASURE = 'CHANGE_MEASURE';
+export const UPDATE_BG_IMAGE = 'UPDATE_BG_IMAGE';

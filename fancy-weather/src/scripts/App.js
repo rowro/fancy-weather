@@ -6,12 +6,14 @@ import Forecast from './Forecast';
 import Location from './Location';
 
 import { getSeason, localDate, getDayTime } from './helpers/date';
+import { CHANGE_MEASURE, UPDATE_BG_IMAGE } from './constants';
 
 export default class App {
   constructor({ rootEl, apiTokens }) {
     this.el = rootEl;
     this.apiTokens = apiTokens;
     this.data = null;
+    this.measure = 'celsius';
   }
 
   async getData() {
@@ -27,18 +29,40 @@ export default class App {
     const weather = this.data.todayWeather.description;
     const { country, city } = this.data;
 
-    this.actions.changeImgBtn.disabled = true;
+    this.actions.updateImgBtn.disabled = true;
 
     const img = await this.api.getPhoto(season, dayTime, weather, country, city);
     document.body.style.backgroundImage = `url(${img.src})`;
 
-    this.actions.changeImgBtn.disabled = false;
+    this.actions.updateImgBtn.disabled = false;
 
     return img;
   }
 
+  changeMeasure(measure) {
+    if (measure !== this.measure) {
+      this.measure = measure;
+      localStorage.setItem('measure', this.measure);
+
+      if (this.data) {
+        this.todayWeather.render({
+          ...this.data,
+          measure: this.measure,
+        });
+        this.forecast.render({
+          ...this.data,
+          measure: this.measure,
+        });
+      }
+    }
+  }
+
   appendListeners() {
-    this.actions.changeImgBtn.addEventListener('click', () => this.updateBgImage());
+    // Change image
+    document.addEventListener(UPDATE_BG_IMAGE, () => this.updateBgImage());
+
+    // Change measure
+    document.addEventListener(CHANGE_MEASURE, (e) => this.changeMeasure(e.detail.measure));
   }
 
   render() {
@@ -54,20 +78,32 @@ export default class App {
     this.forecast = new Forecast(grid);
     this.location = new Location(grid, this.apiTokens.mapbox);
 
+    if (localStorage.getItem('measure')) {
+      this.measure = localStorage.getItem('measure');
+    } else {
+      localStorage.setItem('measure', this.measure);
+    }
+
     this.search.render();
-    this.actions.render();
+    this.actions.render(this.measure);
 
     this.appendListeners();
 
-    this.actions.changeImgBtn.disabled = false;
+    this.actions.updateImgBtn.disabled = true;
 
     this.getData()
       .then((data) => {
         this.data = data;
         this.updateBgImage();
         this.location.render(this.data);
-        this.todayWeather.render(this.data);
-        this.forecast.render(this.data);
+        this.todayWeather.render({
+          ...this.data,
+          measure: this.measure,
+        });
+        this.forecast.render({
+          ...this.data,
+          measure: this.measure,
+        });
       });
   }
 }
