@@ -24,7 +24,14 @@ export default class Location {
 
   render(data) {
     const bemEl = createBEMEl('location');
-    this.el = createEl({ className: 'location' });
+    this.el = document.querySelector('.location');
+
+    // Create new element or clear old element
+    if (!this.el) {
+      this.el = createEl({ className: 'location' });
+    } else {
+      this.el.innerHTML = '';
+    }
 
     // Map
     const mapEl = bemEl('map', { appendTo: this.el });

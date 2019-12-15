@@ -35,8 +35,6 @@ export default class App {
     document.body.style.backgroundImage = `url(${img.src})`;
 
     this.actions.updateImgBtn.disabled = false;
-
-    return img;
   }
 
   changeMeasure(measure) {
@@ -57,12 +55,58 @@ export default class App {
     }
   }
 
+  async searchCity(query) {
+    const cityData = await this.api.getCityData(query);
+
+    if (!cityData) {
+      alert('City not found!');
+      return null;
+    }
+
+    const weatherData = await this.api.getWeather(cityData.city);
+
+    if (!weatherData) {
+      alert('City not found!');
+      return null;
+    }
+
+    this.data = { ...cityData, ...weatherData };
+
+    this.updateBgImage();
+
+    this.location.render(this.data);
+
+    this.todayWeather.render({
+      ...this.data,
+      measure: this.measure,
+    });
+
+    this.forecast.render({
+      ...this.data,
+      measure: this.measure,
+    });
+
+    return this.data;
+  }
+
   appendListeners() {
     // Change image
     document.addEventListener(UPDATE_BG_IMAGE, () => this.updateBgImage());
 
     // Change measure
     document.addEventListener(CHANGE_MEASURE, (e) => this.changeMeasure(e.detail.measure));
+
+    // Search
+    this.search.el.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const data = new FormData(e.target);
+      const query = data.get('city');
+
+      if (query) {
+        this.searchCity(query);
+      }
+    });
   }
 
   render() {

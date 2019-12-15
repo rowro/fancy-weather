@@ -95,8 +95,15 @@ export default class API {
     const lang = 'en';
     const rootUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
     const query = `q=${city}&lang=${lang}&units=metric&APPID=${this.tokens.openWeather}`;
-    const response = await fetch(rootUrl + query);
-    const data = await response.json();
+
+    let data;
+    try {
+      const response = await fetch(rootUrl + query);
+      if (!response.ok) return null;
+      data = await response.json();
+    } catch (e) {
+      return null;
+    }
 
     const todayWeather = data.list.find(
       (item) => (Date.now() < new Date(item.dt * 1000)),
@@ -151,5 +158,36 @@ export default class API {
       img.crossOrigin = 'anonymous';
       img.onload = () => resolve(img);
     });
+  }
+
+  async getCityData(cityName) {
+    const lang = 'en';
+    const rootUrl = 'https://api.opencagedata.com/geocode/v1/json?';
+    const query = `language=${lang}}&q=${cityName}&key=${this.tokens.openCage}`;
+
+    let data;
+    try {
+      const response = await fetch(rootUrl + query);
+      data = await response.json();
+    } catch (e) {
+      return null;
+    }
+
+    const result = data.results[0] || null;
+
+    if (result && (result.components.city || result.components.state)) {
+      const { city, state } = result.components;
+      const { lat, lng } = result.geometry;
+
+      return {
+        latitude: lat,
+        longitude: lng,
+        city: city || state,
+        country: countries[result.components.country_code.toUpperCase()],
+        timezone: data.results[0].annotations.timezone.name,
+      };
+    }
+
+    return null;
   }
 }
