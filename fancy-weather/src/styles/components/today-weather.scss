@@ -39,7 +39,7 @@
     grid-template-areas: 'temp icon'
                          'temp info';
     grid-row-gap: 10px;
-    grid-column-gap: 20px;
+    grid-column-gap: 40px;
     margin-top: 30px;
 
     @media (min-width: 420px) {
@@ -63,7 +63,7 @@
     text-align: center;
     text-transform: uppercase;
 
-    @media (min-width: 420px) {
+    @media (min-width: 480px) {
       font-size: 14rem;
     }
 
@@ -80,13 +80,13 @@
       content: '°';
       position: absolute;
       top: 40px;
-      right: -35px;
+      right: -25px;
       font-size: rem(100);
       line-height: 0;
       z-index: 2;
 
-      @media (min-width: 420px) {
-        right: -40px;
+      @media (min-width: 480px) {
+        right: -25px;
       }
 
       @media (min-width: 576px) {

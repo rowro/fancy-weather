@@ -15,7 +15,11 @@
   }
 
   &__item {
-    margin-right: 25px;
+    margin-right: 15px;
+
+    @media (min-width: 480px) {
+      margin-right: 25px;
+    }
 
     @media (min-width: 992px) {
       margin-right: 50px;
@@ -43,7 +47,7 @@
     line-height: rem(98);
     text-transform: uppercase;
 
-    @media (min-width: 420px) {
+    @media (min-width: 480px) {
       flex-direction: row;
       align-items: flex-start;
     }
@@ -52,7 +56,7 @@
   &__icon {
     font-size: rem(66);
 
-    @media (min-width: 420px) {
+    @media (min-width: 480px) {
       margin-left: 10px;
     }
   }
