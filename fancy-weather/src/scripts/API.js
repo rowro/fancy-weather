@@ -164,8 +164,14 @@ export default class API {
   async getPhoto(...params) {
     const rootUrl = 'https://api.unsplash.com/photos/random';
     const query = `?orientation=landscape&per_page=1&query=${params.join(',')}&client_id=${this.tokens.unsplash}`;
-    const response = await fetch(rootUrl + query);
-    const data = await response.json();
+    let data;
+    try {
+      const response = await fetch(rootUrl + query);
+      if (!response.ok) return null;
+      data = await response.json();
+    } catch (e) {
+      return null;
+    }
 
     return new Promise((resolve) => {
       const img = new Image();

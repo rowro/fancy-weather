@@ -6,7 +6,9 @@ import Forecast from './components/Forecast';
 import Location from './components/Location';
 
 import { getSeason, localDate, getDayTime } from './helpers/date';
-import { CHANGE_LANGUAGE, CHANGE_MEASURE, UPDATE_BG_IMAGE } from './constants';
+import {
+  CHANGE_LANGUAGE, CHANGE_MEASURE, SEARCH_CITY, UPDATE_BG_IMAGE,
+} from './constants';
 
 export default class App {
   constructor({ rootEl, apiTokens }) {
@@ -33,6 +35,9 @@ export default class App {
     this.actions.updateImgBtn.disabled = true;
 
     const img = await this.api.getPhoto(season, dayTime, weather, country);
+
+    if (!img) return;
+
     document.body.style.backgroundImage = `url(${img.src})`;
 
     this.actions.updateImgBtn.disabled = false;
@@ -126,26 +131,10 @@ export default class App {
   }
 
   appendListeners() {
-    // Change image
     document.addEventListener(UPDATE_BG_IMAGE, () => this.updateBgImage());
-
-    // Change measure
     document.addEventListener(CHANGE_MEASURE, (e) => this.changeMeasure(e.detail.measure));
-
-    // Change language
     document.addEventListener(CHANGE_LANGUAGE, (e) => this.changeLang(e.detail.lang));
-
-    // Search
-    this.search.el.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const data = new FormData(e.target);
-      const query = data.get('city');
-
-      if (query) {
-        this.searchCity(query);
-      }
-    });
+    document.addEventListener(SEARCH_CITY, (e) => this.searchCity(e.detail.query));
   }
 
   render() {
@@ -185,11 +174,13 @@ export default class App {
         this.data = data;
         this.updateBgImage();
         this.location.render(this.data, this.lang);
+
         this.todayWeather.render({
           ...this.data,
           measure: this.measure,
           lang: this.lang,
         });
+
         this.forecast.render({
           ...this.data,
           measure: this.measure,

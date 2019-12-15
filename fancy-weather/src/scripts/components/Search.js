@@ -1,5 +1,6 @@
 import { createBEMEl, createEl } from '../helpers/createEl';
 import i18n from '../lang';
+import { SEARCH_CITY } from '../constants';
 
 export default class Search {
   constructor(parentEl) {
@@ -39,6 +40,17 @@ export default class Search {
     if (this.speechBtn) {
       this.speechBtn.addEventListener('click', () => this.startRecognizer());
     }
+
+    this.el.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const data = new FormData(e.target);
+      const query = data.get('city');
+
+      if (query) {
+        document.dispatchEvent(new CustomEvent(SEARCH_CITY, { detail: { query } }));
+      }
+    });
   }
 
   render(lang) {
@@ -66,6 +78,8 @@ export default class Search {
         placeholder: content.searchPlaceholder,
       },
     });
+
+    this.searchInput.required = true;
 
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       this.speechBtn = bemEl('speech-btn', {
