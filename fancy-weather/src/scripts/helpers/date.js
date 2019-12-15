@@ -1,5 +1,5 @@
-export function localDate(timezone) {
-  return new Date(new Date().toLocaleString('en', { timeZone: timezone }));
+export function localDate(timezone, lang = 'en') {
+  return new Date(new Date().toLocaleString(lang, { timeZone: timezone }));
 }
 
 export function formatDate(date, lang, timezone) {

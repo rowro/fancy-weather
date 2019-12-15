@@ -1,4 +1,5 @@
-import { createBEMEl, createEl } from './helpers/createEl';
+import { createBEMEl, createEl } from '../helpers/createEl';
+import i18n from '../lang';
 
 export default class Search {
   constructor(parentEl) {
@@ -16,7 +17,7 @@ export default class Search {
       // eslint-disable-next-line new-cap
       recognition = new window.webkitSpeechRecognition();
     }
-    recognition.lang = 'en';
+    recognition.lang = this.lang;
     recognition.interimResults = true;
 
     recognition.onstart = () => {
@@ -38,7 +39,10 @@ export default class Search {
     this.speechBtn.addEventListener('click', () => this.startRecognizer());
   }
 
-  render() {
+  render(lang) {
+    const content = i18n[lang];
+    this.lang = lang;
+
     const bemEl = createBEMEl('search');
     this.el = document.querySelector('.search');
 
@@ -57,7 +61,7 @@ export default class Search {
       attr: {
         type: 'text',
         name: 'city',
-        placeholder: 'Search city or ZIP',
+        placeholder: content.searchPlaceholder,
       },
     });
 
@@ -71,7 +75,7 @@ export default class Search {
 
     bemEl('submit-btn', {
       tag: 'button',
-      content: 'Search',
+      content: content.searchButton,
       attr: { type: 'submit' },
       appendTo: this.el,
     });

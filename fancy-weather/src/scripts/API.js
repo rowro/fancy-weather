@@ -1,5 +1,3 @@
-import countries from '../assets/country-names';
-
 export default class API {
   constructor(tokens) {
     this.tokens = tokens;
@@ -9,11 +7,11 @@ export default class API {
    * Get user position
    * @returns {Promise<{country: *, city: *, timezone: *, latitude: *, longitude: *}>}
    */
-  async getUserPosition() {
+  async getUserPosition(lang) {
     let pos = null;
 
     try {
-      pos = await this.getGeoData();
+      pos = await this.getGeoData(lang);
     } catch (e) {
       // If the user did not allow geolocation, determine geolocation by IP
       pos = await this.getIpData();
@@ -26,7 +24,7 @@ export default class API {
    * Get user location by Geolocation API
    * @returns {Promise<{country: *, city: *, timezone: *, latitude: *, longitude: *}>}
    */
-  async getGeoData() {
+  async getGeoData(lang) {
     const res = await new Promise((resolve, reject) => {
       // Wait for the user to allow geolocation
       const timer = setTimeout(reject, 5000);
@@ -38,7 +36,7 @@ export default class API {
 
     const { latitude, longitude } = res.coords;
 
-    const { city, country, timezone } = await this.getCityFromCoords(latitude, longitude);
+    const { city, country, timezone } = await this.getCityFromCoords(latitude, longitude, lang);
 
     return {
       latitude,
@@ -63,7 +61,7 @@ export default class API {
       latitude: loc[0],
       longitude: loc[1],
       city: data.city,
-      country: countries[data.country],
+      country: data.country,
       timezone: data.timezone,
     };
   }
@@ -72,10 +70,10 @@ export default class API {
    * Get city and country by coords [lat, long]
    * @param latitude
    * @param longitude
+   * @param lang
    * @returns {Promise<any>}
    */
-  async getCityFromCoords(latitude, longitude) {
-    const lang = 'en';
+  async getCityFromCoords(latitude, longitude, lang) {
     const rootUrl = 'https://api.opencagedata.com/geocode/v1/json?';
     const query = `language=${lang}&q=${latitude}+${longitude}&key=${this.tokens.openCage}`;
 
@@ -91,10 +89,19 @@ export default class API {
     };
   }
 
-  async getWeather(city) {
-    const lang = 'en';
+  /**
+   * Get today weather and 3-days forecast
+   * @param latitude
+   * @param longitude
+   * @param lang
+   * @returns {Promise<null|{forecast: *, todayWeather: *}>}
+   */
+  async getWeather(latitude, longitude, lang) {
+    // OpenWeatherMap doesn't support Belarus language, use Russian as a fallback
+    const language = (lang === 'be') ? 'ru' : lang;
     const rootUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
-    const query = `q=${city}&lang=${lang}&units=metric&APPID=${this.tokens.openWeather}`;
+    const coords = `lat=${latitude}&lon=${longitude}`;
+    const query = `${coords}&lang=${language}&units=metric&APPID=${this.tokens.openWeather}`;
 
     let data;
     try {
@@ -146,6 +153,11 @@ export default class API {
     };
   }
 
+  /**
+   * Get photo from unsplash for background
+   * @param params
+   * @returns {Promise<Image>}
+   */
   async getPhoto(...params) {
     const rootUrl = 'https://api.unsplash.com/photos/random';
     const query = `?orientation=landscape&per_page=1&query=${params.join(',')}&client_id=${this.tokens.unsplash}`;
@@ -160,8 +172,13 @@ export default class API {
     });
   }
 
-  async getCityData(cityName) {
-    const lang = 'en';
+  /**
+   * Get city data
+   * @param cityName
+   * @param lang
+   * @returns {Promise<null|{country: *, city: *, timezone: *, latitude: *, longitude: *}>}
+   */
+  async getCityData(cityName, lang) {
     const rootUrl = 'https://api.opencagedata.com/geocode/v1/json?';
     const query = `language=${lang}}&q=${cityName}&key=${this.tokens.openCage}`;
 
@@ -176,14 +193,14 @@ export default class API {
     const result = data.results[0] || null;
 
     if (result && (result.components.city || result.components.state)) {
-      const { city, state } = result.components;
+      const { city, state, country } = result.components;
       const { lat, lng } = result.geometry;
 
       return {
         latitude: lat,
         longitude: lng,
         city: city || state,
-        country: countries[result.components.country_code.toUpperCase()],
+        country,
         timezone: data.results[0].annotations.timezone.name,
       };
     }

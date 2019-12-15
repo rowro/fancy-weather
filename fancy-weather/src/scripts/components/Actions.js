@@ -1,11 +1,12 @@
-import { createEl, createBEMEl } from './helpers/createEl';
-import { CHANGE_MEASURE, UPDATE_BG_IMAGE } from './constants';
+import { createEl, createBEMEl } from '../helpers/createEl';
+import { CHANGE_LANGUAGE, CHANGE_MEASURE, UPDATE_BG_IMAGE } from '../constants';
 
 export default class Actions {
   constructor(parentEl) {
     this.parentEl = parentEl;
     this.el = null;
     this.updateImgBtn = null;
+    this.langSelect = null;
   }
 
   appendListeners() {
@@ -23,9 +24,16 @@ export default class Actions {
         }));
       });
     });
+
+    // Change language
+    this.langSelect.addEventListener('change', (e) => {
+      document.dispatchEvent(
+        new CustomEvent(CHANGE_LANGUAGE, { detail: { lang: e.target.value } }),
+      );
+    });
   }
 
-  render(measure) {
+  render(lang, measure) {
     const bemEl = createBEMEl('actions');
     this.el = createEl({ className: 'actions' });
 
@@ -36,7 +44,7 @@ export default class Actions {
     });
 
     // Change language
-    bemEl('lang', {
+    this.langSelect = bemEl('lang', {
       tag: 'select',
       appendTo: this.el,
       elements: [
@@ -57,6 +65,8 @@ export default class Actions {
         }),
       ],
     });
+
+    this.langSelect.value = lang;
 
     const fahrenheitRadio = bemEl('input', {
       tag: 'input',

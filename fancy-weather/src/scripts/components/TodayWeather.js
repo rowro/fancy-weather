@@ -1,6 +1,7 @@
-import { createEl, createBEMEl } from './helpers/createEl';
-import { formatDate, formatTime } from './helpers/date';
-import toFahrenheit from './helpers/temperature';
+import { createEl, createBEMEl } from '../helpers/createEl';
+import { formatDate, formatTime } from '../helpers/date';
+import toFahrenheit from '../helpers/temperature';
+import i18n from '../lang';
 
 export default class TodayWeather {
   constructor(parentEl) {
@@ -10,6 +11,7 @@ export default class TodayWeather {
   }
 
   render(data) {
+    const content = i18n[data.lang];
     const bemEl = createBEMEl('today-weather');
 
     this.el = document.querySelector('.today-weather');
@@ -25,17 +27,17 @@ export default class TodayWeather {
     bemEl('city', { content: `${data.city}, ${data.country}`, appendTo: this.el });
 
     // Date and time
-    const timeEl = bemEl('time', { content: formatTime(new Date(), 'en', data.timezone) });
+    const timeEl = bemEl('time', { content: formatTime(new Date(), data.lang, data.timezone) });
 
     bemEl('date', {
-      content: formatDate(new Date(), 'en', data.timezone),
+      content: formatDate(new Date(), data.lang, data.timezone),
       appendTo: this.el,
       elements: [timeEl],
     });
 
     // Update time every minute
     setInterval(() => {
-      timeEl.innerText = formatTime(new Date(), 'en', data.timezone);
+      timeEl.innerText = formatTime(new Date(), data.lang, data.timezone);
     }, 1000 * 60);
 
     // Convert Celsius to Fahrenheit if needed
@@ -55,10 +57,18 @@ export default class TodayWeather {
         // Info
         bemEl('info', {
           elements: [
-            bemEl('description', { content: data.todayWeather.description }),
-            bemEl('feels-like', { content: `Feels like: ${data.todayWeather.feelsLike}°` }),
-            bemEl('wind', { content: `Wind: ${data.todayWeather.wind} m/s` }),
-            bemEl('humidity', { content: `Humidity: ${data.todayWeather.humidity}%` }),
+            bemEl('description', {
+              content: data.todayWeather.description,
+            }),
+            bemEl('feels-like', {
+              content: `${content.feelsLike}: ${data.todayWeather.feelsLike}°`,
+            }),
+            bemEl('wind', {
+              content: `${content.wind}: ${data.todayWeather.wind} ${content.windMeasure}`,
+            }),
+            bemEl('humidity', {
+              content: `${content.humidity}: ${data.todayWeather.humidity}%`,
+            }),
           ],
         }),
       ],

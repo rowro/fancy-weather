@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
-import { createEl, createBEMEl } from './helpers/createEl';
-import formatCoords from './helpers/coords';
+import { createEl, createBEMEl } from '../helpers/createEl';
+import formatCoords from '../helpers/coords';
+import i18n from '../lang';
 
 export default class Location {
   constructor(parentEl, mapboxToken) {
@@ -22,7 +23,8 @@ export default class Location {
     map.on('load', map.resize);
   }
 
-  render(data) {
+  render(data, lang) {
+    const content = i18n[lang];
     const bemEl = createBEMEl('location');
     this.el = document.querySelector('.location');
 
@@ -41,8 +43,12 @@ export default class Location {
     bemEl('position', {
       appendTo: this.el,
       elements: [
-        bemEl('latitude', { content: `Latitude: ${formatCoords(data.latitude)}` }),
-        bemEl('longitude', { content: `Longitude: ${formatCoords(data.longitude)}` }),
+        bemEl('latitude', {
+          content: `${content.latitude}: ${formatCoords(data.latitude)}`,
+        }),
+        bemEl('longitude', {
+          content: `${content.longitude}: ${formatCoords(data.longitude)}`,
+        }),
       ],
     });
 

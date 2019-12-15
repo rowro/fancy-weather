@@ -1,6 +1,6 @@
-import { createEl, createBEMEl } from './helpers/createEl';
-import { formatWeek } from './helpers/date';
-import toFahrenheit from './helpers/temperature';
+import { createEl, createBEMEl } from '../helpers/createEl';
+import { formatWeek } from '../helpers/date';
+import toFahrenheit from '../helpers/temperature';
 
 export default class Forecast {
   constructor(parentEl) {
@@ -10,7 +10,6 @@ export default class Forecast {
   }
 
   render(data) {
-    const lang = 'en';
     const bemEl = createBEMEl('forecast');
 
     this.el = document.querySelector('.forecast');
@@ -34,12 +33,11 @@ export default class Forecast {
       });
 
       this.tempElems.push(tempEl);
-
       bemEl('item', {
         tag: 'li',
         appendTo: this.el,
         elements: [
-          bemEl('day', { content: formatWeek(item.date, lang, data.timezone) }),
+          bemEl('day', { content: formatWeek(item.date, data.lang, data.timezone) }),
           tempEl,
         ],
       });

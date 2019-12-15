@@ -1,12 +1,12 @@
 import API from './API';
-import Search from './Search';
-import Actions from './Actions';
-import TodayWeather from './TodayWeather';
-import Forecast from './Forecast';
-import Location from './Location';
+import Search from './components/Search';
+import Actions from './components/Actions';
+import TodayWeather from './components/TodayWeather';
+import Forecast from './components/Forecast';
+import Location from './components/Location';
 
 import { getSeason, localDate, getDayTime } from './helpers/date';
-import { CHANGE_MEASURE, UPDATE_BG_IMAGE } from './constants';
+import { CHANGE_LANGUAGE, CHANGE_MEASURE, UPDATE_BG_IMAGE } from './constants';
 
 export default class App {
   constructor({ rootEl, apiTokens }) {
@@ -14,11 +14,12 @@ export default class App {
     this.apiTokens = apiTokens;
     this.data = null;
     this.measure = 'celsius';
+    this.lang = 'en';
   }
 
-  async getData() {
-    const posData = await this.api.getUserPosition();
-    const weatherData = await this.api.getWeather(posData.city);
+  async getFullData() {
+    const posData = await this.api.getUserPosition(this.lang);
+    const weatherData = await this.api.getWeather(posData.latitude, posData.longitude, this.lang);
 
     return { ...posData, ...weatherData };
   }
@@ -46,24 +47,57 @@ export default class App {
         this.todayWeather.render({
           ...this.data,
           measure: this.measure,
+          lang: this.lang,
         });
+
         this.forecast.render({
           ...this.data,
           measure: this.measure,
+          lang: this.lang,
+        });
+      }
+    }
+  }
+
+  async changeLang(lang) {
+    if (lang !== this.lang) {
+      this.lang = lang;
+      localStorage.setItem('lang', this.lang);
+
+      if (this.data) {
+        this.search.render(this.lang);
+        this.location.render(this.data, this.lang);
+
+        const { city, latitude, longitude } = this.data;
+        const cityData = await this.api.getCityData(city, this.lang);
+        const weatherData = await this.api.getWeather(latitude, longitude, this.lang);
+
+        this.data = { ...cityData, ...weatherData };
+
+        this.todayWeather.render({
+          ...this.data,
+          measure: this.measure,
+          lang: this.lang,
+        });
+
+        this.forecast.render({
+          ...this.data,
+          measure: this.measure,
+          lang: this.lang,
         });
       }
     }
   }
 
   async searchCity(query) {
-    const cityData = await this.api.getCityData(query);
+    const cityData = await this.api.getCityData(query, this.lang);
 
     if (!cityData) {
       alert('City not found!');
       return null;
     }
 
-    const weatherData = await this.api.getWeather(cityData.city);
+    const weatherData = await this.api.getWeather(cityData.latitude, cityData.longitude, this.lang);
 
     if (!weatherData) {
       alert('City not found!');
@@ -74,16 +108,18 @@ export default class App {
 
     this.updateBgImage();
 
-    this.location.render(this.data);
+    this.location.render(this.data, this.lang);
 
     this.todayWeather.render({
       ...this.data,
       measure: this.measure,
+      lang: this.lang,
     });
 
     this.forecast.render({
       ...this.data,
       measure: this.measure,
+      lang: this.lang,
     });
 
     return this.data;
@@ -95,6 +131,9 @@ export default class App {
 
     // Change measure
     document.addEventListener(CHANGE_MEASURE, (e) => this.changeMeasure(e.detail.measure));
+
+    // Change language
+    document.addEventListener(CHANGE_LANGUAGE, (e) => this.changeLang(e.detail.lang));
 
     // Search
     this.search.el.addEventListener('submit', (e) => {
@@ -128,25 +167,33 @@ export default class App {
       localStorage.setItem('measure', this.measure);
     }
 
-    this.search.render();
-    this.actions.render(this.measure);
+    if (localStorage.getItem('lang')) {
+      this.lang = localStorage.getItem('lang');
+    } else {
+      localStorage.setItem('lang', this.lang);
+    }
+
+    this.search.render(this.lang);
+    this.actions.render(this.lang, this.measure);
 
     this.appendListeners();
 
     this.actions.updateImgBtn.disabled = true;
 
-    this.getData()
+    this.getFullData()
       .then((data) => {
         this.data = data;
         this.updateBgImage();
-        this.location.render(this.data);
+        this.location.render(this.data, this.lang);
         this.todayWeather.render({
           ...this.data,
           measure: this.measure,
+          lang: this.lang,
         });
         this.forecast.render({
           ...this.data,
           measure: this.measure,
+          lang: this.lang,
         });
       });
   }
