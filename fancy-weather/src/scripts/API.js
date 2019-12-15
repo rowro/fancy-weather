@@ -1,3 +1,5 @@
+import countries from '../assets/country-names';
+
 export default class API {
   constructor(tokens) {
     this.tokens = tokens;
@@ -61,7 +63,7 @@ export default class API {
       latitude: loc[0],
       longitude: loc[1],
       city: data.city,
-      country: data.country,
+      country: countries[data.country],
       timezone: data.timezone,
     };
   }
@@ -144,6 +146,7 @@ export default class API {
       forecast,
       todayWeather: {
         icon: todayWeather.weather[0].icon,
+        weatherId: todayWeather.weather[0].id,
         description: todayWeather.weather[0].description,
         temp: Math.floor(todayWeather.main.temp),
         feelsLike: Math.floor(todayWeather.main.feels_like),

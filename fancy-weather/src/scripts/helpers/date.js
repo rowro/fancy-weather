@@ -1,3 +1,5 @@
+import i18n from '../lang';
+
 export function localDate(timezone, lang = 'en') {
   return new Date(new Date().toLocaleString(lang, { timeZone: timezone }));
 }
@@ -10,6 +12,13 @@ export function formatDate(date, lang, timezone) {
     day: 'numeric',
     month: 'long',
   });
+
+  // Intl Belarus language doesn't support in Chrome
+  if (lang === 'be') {
+    const week = i18n.be.weekShortNames[date.getDay()];
+    const month = i18n.be.monthNames[date.getMonth()];
+    return `${week}, ${date.getDate()} ${month}`;
+  }
 
   return formatter.format(date);
 }
@@ -30,6 +39,11 @@ export function formatWeek(date, lang, timezone) {
     timeZone: timezone,
     weekday: 'long',
   });
+
+  // Intl Belarus language doesn't support in Chrome
+  if (lang === 'be') {
+    return i18n.be.weekNames[new Date(date).getDay()];
+  }
 
   return formatter.format(date);
 }

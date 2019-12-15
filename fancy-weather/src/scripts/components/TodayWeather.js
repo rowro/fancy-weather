@@ -46,6 +46,12 @@ export default class TodayWeather {
 
     this.tempEl = bemEl('temp', { content: `<span>${temp}</span>` });
 
+    let weatherDescription = data.todayWeather.description;
+
+    if (data.lang === 'be') {
+      weatherDescription = content.weatherDescriptions[data.todayWeather.weatherId];
+    }
+
     // Temperature and info
     bemEl('content', {
       appendTo: this.el,
@@ -58,7 +64,7 @@ export default class TodayWeather {
         bemEl('info', {
           elements: [
             bemEl('description', {
-              content: data.todayWeather.description,
+              content: weatherDescription,
             }),
             bemEl('feels-like', {
               content: `${content.feelsLike}: ${data.todayWeather.feelsLike}°`,

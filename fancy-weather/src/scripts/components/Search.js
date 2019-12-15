@@ -36,7 +36,9 @@ export default class Search {
   }
 
   appendListeners() {
-    this.speechBtn.addEventListener('click', () => this.startRecognizer());
+    if (this.speechBtn) {
+      this.speechBtn.addEventListener('click', () => this.startRecognizer());
+    }
   }
 
   render(lang) {
