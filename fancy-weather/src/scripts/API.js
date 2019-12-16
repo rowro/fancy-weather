@@ -82,10 +82,12 @@ export default class API {
     const response = await fetch(rootUrl + query);
     const data = await response.json();
 
-    const { city, country, state } = data.results[0].components;
+    const {
+      city, country, state, hamlet, village,
+    } = data.results[0].components;
 
     return {
-      city: city || state,
+      city: city || hamlet || village || state,
       country,
       timezone: data.results[0].annotations.timezone.name,
     };
@@ -202,13 +204,15 @@ export default class API {
     const result = data.results[0] || null;
 
     if (result && (result.components.city || result.components.state)) {
-      const { city, state, country } = result.components;
+      const {
+        city, state, country, hamlet, village,
+      } = result.components;
       const { lat, lng } = result.geometry;
 
       return {
         latitude: lat,
         longitude: lng,
-        city: city || state,
+        city: city || hamlet || village || state,
         country,
         timezone: data.results[0].annotations.timezone.name,
       };
