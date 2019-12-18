@@ -29,6 +29,7 @@ describe('DOM functions', () => {
 
     const el = createEl({
       tag: 'a',
+      id: 'elem',
       className: 'element',
       attr: {
         href: '#',
@@ -39,6 +40,10 @@ describe('DOM functions', () => {
 
     test('should append DOM element to document', () => {
       expect(el).toBeInTheDocument();
+    });
+
+    test('should add id to DOM element', () => {
+      expect(el.id).toBe('elem');
     });
 
     test('should add class to DOM element', () => {
