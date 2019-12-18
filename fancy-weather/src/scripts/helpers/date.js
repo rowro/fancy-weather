@@ -19,7 +19,9 @@ export function localDate(timezone, lang = 'en') {
  * @returns {Date}
  */
 export function formatDate(date, lang, timezone) {
-  const formatter = new Intl.DateTimeFormat(lang, {
+  const locale = (lang === 'en') ? 'en-GB' : lang;
+
+  const formatter = new Intl.DateTimeFormat(locale, {
     timeZone: timezone,
     hour12: false,
     weekday: 'short',
