@@ -4,11 +4,13 @@ import Actions from './components/Actions';
 import TodayWeather from './components/TodayWeather';
 import Forecast from './components/Forecast';
 import Location from './components/Location';
+import Message from './components/Message';
 
 import { getSeason, localDate, getDayTime } from './helpers/date';
 import {
-  CHANGE_LANGUAGE, CHANGE_MEASURE, SEARCH_CITY, UPDATE_BG_IMAGE,
+  CHANGE_LANGUAGE, CHANGE_MEASURE, SEARCH_CITY, SHOW_MESSAGE, UPDATE_BG_IMAGE,
 } from './constants';
+import fireEvent from './helpers/events';
 
 export default class App {
   constructor({ rootEl, apiTokens }) {
@@ -98,14 +100,14 @@ export default class App {
     const cityData = await this.api.getCityData(query, this.lang);
 
     if (!cityData) {
-      alert('City not found!');
+      fireEvent(SHOW_MESSAGE, { message: 'City not found' });
       return null;
     }
 
     const weatherData = await this.api.getWeather(cityData.latitude, cityData.longitude, this.lang);
 
     if (!weatherData) {
-      alert('City not found!');
+      fireEvent(SHOW_MESSAGE, { message: 'City not found' });
       return null;
     }
 
@@ -131,10 +133,19 @@ export default class App {
   }
 
   appendListeners() {
+    let searchIsRun = false;
     document.addEventListener(UPDATE_BG_IMAGE, () => this.updateBgImage());
     document.addEventListener(CHANGE_MEASURE, (e) => this.changeMeasure(e.detail.measure));
     document.addEventListener(CHANGE_LANGUAGE, (e) => this.changeLang(e.detail.lang));
-    document.addEventListener(SEARCH_CITY, (e) => this.searchCity(e.detail.query));
+    document.addEventListener(SEARCH_CITY, (e) => {
+      if (!searchIsRun) {
+        searchIsRun = true;
+        this.searchCity(e.detail.query)
+          .then(() => {
+            searchIsRun = false;
+          });
+      }
+    });
   }
 
   render() {
@@ -149,6 +160,7 @@ export default class App {
     this.todayWeather = new TodayWeather(grid);
     this.forecast = new Forecast(grid);
     this.location = new Location(grid, this.apiTokens.mapbox);
+    this.message = new Message(grid);
 
     if (localStorage.getItem('measure')) {
       this.measure = localStorage.getItem('measure');
@@ -162,6 +174,7 @@ export default class App {
       localStorage.setItem('lang', this.lang);
     }
 
+    this.message.render();
     this.search.render(this.lang);
     this.actions.render(this.lang, this.measure);
 

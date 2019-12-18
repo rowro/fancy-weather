@@ -1,5 +1,6 @@
 import { createEl, createBEMEl } from '../helpers/createEl';
 import { CHANGE_LANGUAGE, CHANGE_MEASURE, UPDATE_BG_IMAGE } from '../constants';
+import fireEvent from '../helpers/events';
 
 export default class Actions {
   constructor(parentEl) {
@@ -11,25 +12,19 @@ export default class Actions {
 
   appendListeners() {
     // Update image
-    this.updateImgBtn.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent(UPDATE_BG_IMAGE));
-    });
+    this.updateImgBtn.addEventListener('click', () => fireEvent(UPDATE_BG_IMAGE));
 
     // Change measure
     const measureInputs = this.el.querySelectorAll('input[type="radio"][name="measure"]');
     [...measureInputs].forEach((input) => {
       input.addEventListener('change', (e) => {
-        document.dispatchEvent(new CustomEvent(CHANGE_MEASURE, {
-          detail: { measure: e.target.value },
-        }));
+        fireEvent(CHANGE_MEASURE, { measure: e.target.value });
       });
     });
 
     // Change language
     this.langSelect.addEventListener('change', (e) => {
-      document.dispatchEvent(
-        new CustomEvent(CHANGE_LANGUAGE, { detail: { lang: e.target.value } }),
-      );
+      fireEvent(CHANGE_LANGUAGE, { lang: e.target.value });
     });
   }
 

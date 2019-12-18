@@ -1,6 +1,7 @@
 import { createBEMEl, createEl } from '../helpers/createEl';
 import i18n from '../lang';
 import { SEARCH_CITY } from '../constants';
+import fireEvent from '../helpers/events';
 
 export default class Search {
   constructor(parentEl) {
@@ -48,7 +49,7 @@ export default class Search {
       const query = data.get('city');
 
       if (query) {
-        document.dispatchEvent(new CustomEvent(SEARCH_CITY, { detail: { query } }));
+        fireEvent(SEARCH_CITY, { query });
       }
     });
   }
