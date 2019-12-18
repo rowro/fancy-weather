@@ -123,12 +123,10 @@ export default class API {
     const currentDay = new Date().getDate();
 
     // Get three days weather from array
+    const linesPerDay = data.list.length / 5;
+    const countDays = 3 + 0.5; // 0.5 - today
     const forecast = data.list
-      .filter((item) => {
-        const itemDay = new Date(item.dt * 1000).getDate();
-        return (itemDay > currentDay) && (itemDay < (currentDay + 3));
-      })
-      .slice(-12)
+      .slice(linesPerDay * countDays - data.list.length)
       .reduce((res, item, index) => {
         const chunkIndex = Math.floor(index / 4);
 
