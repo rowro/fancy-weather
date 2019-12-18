@@ -58,7 +58,8 @@ export function createEl({
  */
 export function createBEMEl(blockClass) {
   return function f(elName, config) {
-    const className = `${blockClass}__${elName} ${config.className || ''}`;
+    let className = `${blockClass}__${elName}`;
+    if (config.className) className += ` ${config.className}`;
     return createEl({ ...config, className });
   };
 }

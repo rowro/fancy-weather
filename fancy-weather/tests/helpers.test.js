@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import formatCoords from '../src/scripts/helpers/coords';
-import { createEl } from '../src/scripts/helpers/createEl';
+import { createBEMEl, createEl } from '../src/scripts/helpers/createEl';
 import toFahrenheit from '../src/scripts/helpers/temperature';
 import {
   formatDate,
@@ -22,9 +22,49 @@ describe('Coords functions', () => {
 
 describe('DOM functions', () => {
   describe('createEl', () => {
+    const subElement =  createEl({
+      tag: 'span',
+      className: 'sub-element',
+    });
+
+    const el = createEl({
+      tag: 'a',
+      className: 'element',
+      attr: {
+        href: '#',
+      },
+      elements: [subElement],
+      appendTo: document.body,
+    });
+
     test('should append DOM element to document', () => {
-      const el = createEl({ tag: 'div', appendTo: document.body });
       expect(el).toBeInTheDocument();
+    });
+
+    test('should add class to DOM element', () => {
+      expect(el.className).toBe('element');
+    });
+
+    test('should add attributes to DOM element', () => {
+      expect(el.getAttribute('href')).toBe('#');
+    });
+
+    test('should add elements to DOM element', () => {
+      expect(el).toContainElement(subElement);
+    });
+
+    test('should add content to DOM element', () => {
+      expect(createEl({ content: 'Hello World!' })).toHaveTextContent('Hello World!');
+    });
+  });
+
+  describe('createBEMEl', () => {
+    test('should create BEM valid element', () => {
+      const bemEl = createBEMEl('block');
+      const block = document.querySelector('.block');
+      const el = bemEl('element', { appendTo: block });
+
+      expect(el.className).toBe('block__element');
     });
   });
 });
