@@ -1,2 +1,12 @@
-# rowro-RS2019Q3
-Private repository for @rowro
+# Fancy Weather
+
+https://rowro-fancy-weather.netlify.com/
+
+Dev:  
+`npm run start`
+
+Production:  
+`npm run build`
+
+Lint:  
+`npm run lint`

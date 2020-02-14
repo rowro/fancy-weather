@@ -1,0 +1,31 @@
+.location {
+  grid-area: location;
+  justify-self: center;
+  margin-top: 40px;
+
+  @media (min-width: 992px) {
+    justify-self: flex-start;
+    align-self: end;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  &__map {
+    width: 280px;
+    height: 280px;
+    border-radius: 20px;
+
+    @media (min-width: 420px) {
+      width: 375px;
+      height: 375px;
+    }
+  }
+
+  &__position {
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.5;
+    text-align: right;
+  }
+}
