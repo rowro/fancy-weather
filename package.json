@@ -42,7 +42,7 @@
     },
     "dependencies": {
         "babel-polyfill": "^6.26.0",
-        "mapbox-gl": "^1.6.0",
+        "mapbox-gl": "^1.13.3",
         "open-weather-icons": "0.0.8"
     }
 }
